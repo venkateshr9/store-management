@@ -1,0 +1,121 @@
+from __future__ import annotations
+
+from app.models.role import Role
+from app.repositories.role import RoleRepository
+from app.schemas.role import (
+    RoleCreate,
+    RoleUpdate,
+)
+
+
+class RoleService:
+    def __init__(
+        self,
+        repository: RoleRepository,
+    ):
+        self.repository = repository
+
+    # ---------------------------------------------------------
+    # Create
+    # ---------------------------------------------------------
+
+    def create_role(
+        self,
+        payload: RoleCreate,
+    ) -> Role:
+
+        existing = self.repository.get_by_code(
+            payload.role_code
+        )
+
+        if existing:
+            raise ValueError(
+                "Role code already exists."
+            )
+
+        return self.repository.create(payload)
+
+    # ---------------------------------------------------------
+    # Get
+    # ---------------------------------------------------------
+
+    def get_role(
+        self,
+        role_id: int,
+    ) -> Role | None:
+
+        return self.repository.get(role_id)
+
+    # ---------------------------------------------------------
+    # List
+    # ---------------------------------------------------------
+
+    def list_roles(self) -> list[Role]:
+
+        return self.repository.list()
+
+    # ---------------------------------------------------------
+    # List Active
+    # ---------------------------------------------------------
+
+    def list_active_roles(self) -> list[Role]:
+
+        return self.repository.list_active()
+
+    # ---------------------------------------------------------
+    # Update
+    # ---------------------------------------------------------
+
+    def update_role(
+        self,
+        role_id: int,
+        payload: RoleUpdate,
+    ) -> Role:
+
+        role = self.repository.get(role_id)
+
+        if role is None:
+            raise ValueError(
+                "Role not found."
+            )
+
+        if (
+            payload.role_code is not None
+            and payload.role_code != role.role_code
+        ):
+            existing = self.repository.get_by_code(
+                payload.role_code
+            )
+
+            if existing:
+                raise ValueError(
+                    "Role code already exists."
+                )
+
+        return self.repository.update(
+            role,
+            payload,
+        )
+
+    # ---------------------------------------------------------
+    # Delete
+    # ---------------------------------------------------------
+
+    def delete_role(
+        self,
+        role_id: int,
+    ) -> None:
+
+        role = self.repository.get(role_id)
+
+        if role is None:
+            raise ValueError(
+                "Role not found."
+            )
+
+        if role.is_system:
+            raise ValueError(
+                "System roles cannot be deleted."
+            )
+
+        self.repository.delete(role)
