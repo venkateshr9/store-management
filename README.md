@@ -1,7 +1,7 @@
 <p align="center">
-  <img src="docs/images/logo.png" alt="Store Management System" width="180"/>
+  <img src="./frontend/docs/images/logo.png" alt="Store Management System" width="180"/>
 </p>
-
+<br />
 <h1 align="center">Store Management System</h1>
 
 <p align="center">
