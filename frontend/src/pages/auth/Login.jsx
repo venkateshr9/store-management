@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -17,7 +16,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
@@ -75,19 +73,41 @@ export default function Login() {
         <CardContent sx={{ p: 5 }}>
           <Stack spacing={3} alignItems="center">
 
-            <Avatar
-              sx={{
-                bgcolor: "primary.main",
-                width: 60,
-                height: 60,
-              }}
-            >
-              <LockOutlinedIcon fontSize="large" />
-            </Avatar>
+	   <Box
+   		 sx={{
+        	width: "100%",
+        	display: "flex",
+        	justifyContent: "center",
+        	mb: 2,
+    		}}
+	>
+    	<Box
+        	component="img"
+        	src="/logo.png"
+        	alt="Store Management System"
+        	sx={{
+            	width: 170,
+            	height: 170,
+            	objectFit: "contain",
+        	}}
+    		/>
+	</Box>  
 
-            <Box textAlign="center">
-              <Typography variant="h4" fontWeight={700}>
-                Store Management
+        <Box
+    		sx={{
+        	width: "100%",
+        	textAlign: "center",
+    		}}
+	>
+	  <Typography 
+	  	variant="h4" 
+	  	fontWeight={800} 
+	  	color="primary"
+	  	sx={{
+			lineheight: 1.15,
+		}}
+	  	>
+                Store Management System
               </Typography>
 
               <Typography
@@ -95,8 +115,8 @@ export default function Login() {
                 color="text.secondary"
                 sx={{ mt: 1 }}
               >
-                Enterprise Inventory & Warehouse Management
-              </Typography>
+            Enterprise Inventory & Warehouse Platform  
+	    </Typography>
             </Box>
 
             {error && (
@@ -174,13 +194,23 @@ export default function Login() {
                 : "Sign In"}
             </Button>
 
-            <Typography
-              variant="caption"
-              color="text.secondary"
-            >
-              Version 1.0.0
-            </Typography>
+	   <Stack spacing={0.5} alignItems="center">
 
+    	<Typography
+        	variant="caption"
+        	color="text.secondary"
+    	>
+        	Version 1.0.0
+    	</Typography>
+
+    <Typography
+        variant="caption"
+        color="text.secondary"
+    >
+        © 2026 Store Management System
+    </Typography>
+
+</Stack>
           </Stack>
         </CardContent>
       </Card>

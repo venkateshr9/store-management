@@ -1,16 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+)
+
 from sqlalchemy.orm import Session
 
-from app.core.permissions import require_permission
-from app.crud.user import (
-    create_user,
-    delete_user,
-    get_user,
-    get_users,
-    update_user,
+from app.db.session import get_db
+
+from app.repositories.user import UserRepository
+from app.services.user import UserService
+
+from app.schemas.user import (
+    UserCreate,
+    UserUpdate,
+    UserResponse,
 )
-from app.db.database import get_db
-from app.schemas.user import UserCreate, UserResponse, UserUpdate
 
 router = APIRouter(
     prefix="/users",
@@ -18,94 +24,123 @@ router = APIRouter(
 )
 
 
+def get_service(
+    db: Session = Depends(get_db),
+) -> UserService:
+
+    repository = UserRepository(db)
+
+    return UserService(repository)
+
+
+# ---------------------------------------------------------
+# List
+# ---------------------------------------------------------
+
 @router.get(
     "/",
     response_model=list[UserResponse],
-    dependencies=[Depends(require_permission("users:view"))],
 )
 def list_users(
-    skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=500),
-    db: Session = Depends(get_db),
+    service: UserService = Depends(get_service),
 ):
-    return get_users(db, skip, limit)
 
+    return service.list_users()
+
+
+# ---------------------------------------------------------
+# Get
+# ---------------------------------------------------------
 
 @router.get(
     "/{user_id}",
     response_model=UserResponse,
-    dependencies=[Depends(require_permission("users:view"))],
 )
-def read_user(
+def get_user(
     user_id: int,
-    db: Session = Depends(get_db),
+    service: UserService = Depends(get_service),
 ):
-    user = get_user(db, user_id)
 
-    if not user:
+    user = service.get_user(user_id)
+
+    if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
+            detail="User not found.",
         )
 
     return user
 
 
+# ---------------------------------------------------------
+# Create
+# ---------------------------------------------------------
+
 @router.post(
     "/",
     response_model=UserResponse,
     status_code=status.HTTP_201_CREATED,
-    dependencies=[Depends(require_permission("users:create"))],
 )
-def add_user(
-    user: UserCreate,
-    db: Session = Depends(get_db),
+def create_user(
+    payload: UserCreate,
+    service: UserService = Depends(get_service),
 ):
+
     try:
-        return create_user(db, user)
-    except ValueError as e:
+        return service.create_user(payload)
+
+    except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e),
+            detail=str(exc),
         )
 
+
+# ---------------------------------------------------------
+# Update
+# ---------------------------------------------------------
 
 @router.put(
     "/{user_id}",
     response_model=UserResponse,
-    dependencies=[Depends(require_permission("users:update"))],
 )
-def edit_user(
+def update_user(
     user_id: int,
-    user: UserUpdate,
-    db: Session = Depends(get_db),
+    payload: UserUpdate,
+    service: UserService = Depends(get_service),
 ):
-    db_user = get_user(db, user_id)
 
-    if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
+    try:
+        return service.update_user(
+            user_id,
+            payload,
         )
 
-    return update_user(db, db_user, user)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
 
+
+# ---------------------------------------------------------
+# Delete
+# ---------------------------------------------------------
 
 @router.delete(
     "/{user_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(require_permission("users:delete"))],
 )
-def remove_user(
+def delete_user(
     user_id: int,
-    db: Session = Depends(get_db),
+    service: UserService = Depends(get_service),
 ):
-    db_user = get_user(db, user_id)
 
-    if not db_user:
+    try:
+        service.delete_user(user_id)
+
+    except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
+            detail=str(exc),
         )
-
-    delete_user(db, db_user)

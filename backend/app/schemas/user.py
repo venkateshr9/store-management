@@ -1,34 +1,120 @@
+from __future__ import annotations
+
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr
+from pydantic import EmailStr, Field
+
+from app.schemas.common import (
+    AuditSchema,
+    BaseSchema,
+    PaginatedResponse,
+)
 
 
-class UserBase(BaseModel):
-    employee_no: str
-    username: str
-    full_name: str
+# ---------------------------------------------------------
+# Base
+# ---------------------------------------------------------
+
+class UserBase(BaseSchema):
+
+    employee_no: str = Field(
+        ...,
+        max_length=50,
+    )
+
+    username: str = Field(
+        ...,
+        max_length=100,
+    )
+
+    full_name: str = Field(
+        ...,
+        max_length=200,
+    )
+
     email: EmailStr | None = None
-    mobile: str | None = None
+
+    mobile: str | None = Field(
+        default=None,
+        max_length=20,
+    )
+
+    department_id: int | None = None
+
+    role_id: int | None = None
+
     is_active: bool = True
 
+    remarks: str | None = Field(
+        default=None,
+        max_length=500,
+    )
+
+
+# ---------------------------------------------------------
+# Create
+# ---------------------------------------------------------
 
 class UserCreate(UserBase):
-    password: str
+
+    password: str = Field(
+        ...,
+        min_length=8,
+    )
 
 
-class UserUpdate(BaseModel):
-    full_name: str | None = None
+# ---------------------------------------------------------
+# Update
+# ---------------------------------------------------------
+
+class UserUpdate(BaseSchema):
+
+    employee_no: str | None = Field(
+        default=None,
+        max_length=50,
+    )
+
+    username: str | None = Field(
+        default=None,
+        max_length=100,
+    )
+
+    full_name: str | None = Field(
+        default=None,
+        max_length=200,
+    )
+
     email: EmailStr | None = None
-    mobile: str | None = None
+
+    mobile: str | None = Field(
+        default=None,
+        max_length=20,
+    )
+
+    department_id: int | None = None
+
+    role_id: int | None = None
+
     is_active: bool | None = None
 
+    remarks: str | None = Field(
+        default=None,
+        max_length=500,
+    )
 
-class UserResponse(UserBase):
-    id: int
+
+# ---------------------------------------------------------
+# Response
+# ---------------------------------------------------------
+
+class UserResponse(
+    AuditSchema,
+    UserBase,
+):
+
     last_login: datetime | None = None
-    created_at: datetime
-    updated_at: datetime
 
-    model_config = {
-        "from_attributes": True
-    }
+
+UserListResponse = PaginatedResponse[
+    UserResponse
+]

@@ -3,10 +3,12 @@ import {
   Toolbar,
 } from "@mui/material";
 
+import { Outlet } from "react-router-dom";
+
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
   return (
     <Box sx={{ display: "flex" }}>
 
@@ -14,16 +16,18 @@ export default function DashboardLayout({ children }) {
 
       <Sidebar />
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-        }}
-      >
-        <Toolbar />
+         <Box
+  	component="main"
+  	sx={{
+    	flexGrow: 1,
+    	p: 3,
+    	width: "100%",
+    	overflow: "auto",
+ 	 }}
+	>
+	 <Toolbar />
 
-        {children}
+        <Outlet />
 
       </Box>
 

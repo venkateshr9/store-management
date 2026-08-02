@@ -4,6 +4,8 @@ import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import PlatformModuleList from "../pages/platform-modules/PlatformModuleList";
 import RoleList from "../pages/security/roles";
+import PermissionList from "../pages/security/permissions";
+import UserList from "../pages/users/UserList";
 
 import PrivateRoute from "../auth/PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -12,41 +14,45 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
 
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <Dashboard />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-	<Route
-  	  path="/security/roles"
-  	  element={
-          <PrivateRoute>
-      	  <DashboardLayout>
-       	  <RoleList />
-      	  </DashboardLayout>
-    	  </PrivateRoute>
-  	  }
-	/>
-	<Route
-  	  path="/platform-modules"
-  	  element={
-    	  <PrivateRoute>
-      	  <DashboardLayout>
-          <PlatformModuleList />
-          </DashboardLayout>
-         </PrivateRoute>
-         }
-	/>
+        {/* Authentication */}
+        <Route element={<PrivateRoute />}>
+
+          {/* Layout */}
+          <Route element={<DashboardLayout />}>
+
+            <Route path="/dashboard" element={<Dashboard />} />
+	    
+	    <Route
+      		path="/users"
+      		element={<UserList />}
+    	    />
+
+            <Route
+              path="/platform-modules"
+              element={<PlatformModuleList />}
+            />
+
+            <Route
+              path="/security/roles"
+              element={<RoleList />}
+            />
+
+            <Route
+              path="/security/permissions"
+              element={<PermissionList />}
+            />
+
+          </Route>
+
+        </Route>
+
         <Route path="*" element={<Navigate to="/login" replace />} />
+
+
       </Routes>
     </BrowserRouter>
   );

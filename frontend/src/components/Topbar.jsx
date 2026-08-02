@@ -1,8 +1,8 @@
 import {
   AppBar,
   Toolbar,
-  Typography,
   IconButton,
+  Box,
 } from "@mui/material";
 
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -20,27 +20,44 @@ export default function Topbar() {
   };
 
   return (
-    <AppBar
-      position="fixed"
-      sx={{ zIndex: 1201 }}
+  <AppBar
+    position="fixed"
+    sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+	bgcolor: "#1565C0",
+    }}
+  >
+    <Toolbar
+      sx={{
+        minHeight: 72,
+      }}
     >
-      <Toolbar>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          component="img"
+          src="/navbar-logo.png"
+          alt="Store Management System"
+          sx={{
+            height: 75,
+            width: "auto",
+          }}
+        />
+      </Box>
 
-        <Typography
-          variant="h6"
-          sx={{ flexGrow: 1 }}
-        >
-          Store Management System
-        </Typography>
+      <IconButton
+        color="inherit"
+        onClick={handleLogout}
+      >
+        <LogoutIcon />
+      </IconButton>
 
-        <IconButton
-          color="inherit"
-          onClick={handleLogout}
-        >
-          <LogoutIcon />
-        </IconButton>
-
-      </Toolbar>
-    </AppBar>
-  );
+    </Toolbar>
+  </AppBar>
+);
 }
