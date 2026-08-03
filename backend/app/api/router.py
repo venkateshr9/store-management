@@ -5,6 +5,7 @@ from app.api.v1.users import router as users_router
 from app.api.v1.role import router as role_router
 from app.api.v1.platform_module import router as platform_module_router
 from app.api.v1.permission import router as permission_router
+from app.api.v1.departments import router as departments_router
 
 api_router = APIRouter()
 
@@ -22,3 +23,4 @@ api_router.include_router(users_router)
 api_router.include_router(role_router)
 api_router.include_router(platform_module_router)
 api_router.include_router(permission_router)
+api_router.include_router(departments_router)
