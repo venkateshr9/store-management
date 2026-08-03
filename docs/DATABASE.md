@@ -1,0 +1,543 @@
+# Database Design
+
+## Store Management System
+
+This document describes the database architecture, naming conventions, relationships, migration strategy, indexing, and table design used in the Store Management System.
+
+---
+
+# Database Engine
+
+| Property | Value |
+|----------|-------|
+| Database | MySQL Community Server |
+| Version | 8.x |
+| Storage Engine | InnoDB |
+| Character Set | utf8mb4 |
+| Collation | utf8mb4_general_ci |
+
+---
+
+# ORM
+
+The project uses
+
+- SQLAlchemy 2.0
+- Alembic
+- Pydantic
+
+Architecture
+
+```
+React
+     │
+Axios
+     │
+FastAPI
+     │
+Service
+     │
+Repository
+     │
+SQLAlchemy
+     │
+MySQL
+```
+
+---
+
+# Naming Convention
+
+## Tables
+
+Plural
+
+```
+users
+departments
+roles
+permissions
+products
+suppliers
+warehouses
+```
+
+---
+
+## Primary Key
+
+```
+id
+```
+
+Integer Auto Increment
+
+Example
+
+```
+id INT AUTO_INCREMENT PRIMARY KEY
+```
+
+---
+
+## Foreign Keys
+
+Format
+
+```
+department_id
+
+role_id
+
+product_id
+
+supplier_id
+```
+
+---
+
+## Boolean
+
+```
+is_active
+
+is_deleted
+
+is_locked
+```
+
+---
+
+## Audit Columns
+
+Every master table should contain
+
+```
+created_by
+
+created_at
+
+updated_by
+
+updated_at
+```
+
+---
+
+# Current Database Tables
+
+## users
+
+Purpose
+
+Stores application users.
+
+Columns
+
+| Column | Description |
+|---------|-------------|
+| id | Primary Key |
+| employee_no | Employee Number |
+| username | Login Username |
+| full_name | Employee Name |
+| email | Email Address |
+| mobile | Mobile Number |
+| password_hash | Argon2 Password |
+| department_id | Department |
+| role_id | Role |
+| remarks | Notes |
+| is_active | Active Status |
+| last_login | Last Login |
+| created_by | Created By |
+| created_at | Created Time |
+| updated_by | Updated By |
+| updated_at | Updated Time |
+
+---
+
+## departments
+
+Purpose
+
+Stores company departments.
+
+Columns
+
+| Column | Description |
+|---------|-------------|
+| id | Primary Key |
+| department_code | Department Code |
+| department_name | Department Name |
+| description | Description |
+| remarks | Notes |
+| is_active | Active Status |
+| created_by | Created By |
+| created_at | Created Time |
+| updated_by | Updated By |
+| updated_at | Updated Time |
+
+---
+
+## roles
+
+Purpose
+
+Stores security roles.
+
+Example
+
+```
+Administrator
+
+Store Manager
+
+Store Officer
+
+Auditor
+```
+
+---
+
+## permissions
+
+Purpose
+
+Stores system permissions.
+
+Example
+
+```
+users:view
+
+users:create
+
+users:update
+
+users:delete
+
+departments:view
+```
+
+---
+
+## user_roles
+
+Purpose
+
+Maps users to roles.
+
+---
+
+## role_permissions
+
+Purpose
+
+Maps roles to permissions.
+
+---
+
+## platform_modules
+
+Purpose
+
+Dynamic platform module configuration.
+
+---
+
+## platform_module_fields
+
+Purpose
+
+Stores field metadata.
+
+---
+
+# Future Tables
+
+Master Data
+
+```
+categories
+
+products
+
+suppliers
+
+manufacturers
+
+units
+
+warehouses
+
+locations
+```
+
+Inventory
+
+```
+stock
+
+stock_transactions
+
+goods_receipts
+
+stock_issues
+
+stock_adjustments
+
+stock_transfers
+```
+
+Purchasing
+
+```
+purchase_orders
+
+purchase_order_items
+```
+
+Sales
+
+```
+customers
+
+sales_orders
+
+sales_order_items
+```
+
+Administration
+
+```
+audit_logs
+
+login_history
+
+system_settings
+
+attachments
+
+notifications
+```
+
+---
+
+# Relationships
+
+```
+Department
+      │
+      │
+      ▼
+User
+      │
+      ▼
+Role
+      │
+      ▼
+Permission
+```
+
+Future
+
+```
+Supplier
+      │
+      ▼
+Product
+      │
+      ▼
+Warehouse
+      │
+      ▼
+Stock
+```
+
+---
+
+# Indexing Strategy
+
+Primary Key
+
+```
+id
+```
+
+Unique Index
+
+```
+employee_no
+
+username
+
+department_code
+
+department_name
+```
+
+Search Index
+
+```
+email
+
+mobile
+
+product_code
+
+supplier_code
+```
+
+---
+
+# Migration Strategy
+
+Never modify tables manually.
+
+Always use Alembic.
+
+Generate
+
+```bash
+alembic revision --autogenerate -m "description"
+```
+
+Review migration
+
+Remove unwanted changes.
+
+Apply
+
+```bash
+alembic upgrade head
+```
+
+Verify
+
+```sql
+SHOW TABLES;
+
+DESCRIBE table_name;
+```
+
+---
+
+# Backup Strategy
+
+Before every production upgrade
+
+```
+mysqldump
+```
+
+Example
+
+```bash
+mysqldump -u root -p store_management > backup.sql
+```
+
+---
+
+# Restore
+
+```bash
+mysql -u root -p store_management < backup.sql
+```
+
+---
+
+# Data Integrity Rules
+
+- Primary Keys must be auto increment.
+- Business codes must be unique.
+- Never store plaintext passwords.
+- Store Argon2 password hashes only.
+- Use foreign keys where appropriate.
+- Keep audit columns in all master tables.
+
+---
+
+# Audit Policy
+
+Every master table must contain
+
+```
+created_by
+
+created_at
+
+updated_by
+
+updated_at
+```
+
+Future enhancement
+
+```
+deleted_by
+
+deleted_at
+
+is_deleted
+```
+
+---
+
+# Security
+
+Passwords
+
+```
+Argon2
+```
+
+Authentication
+
+```
+JWT
+```
+
+Authorization
+
+```
+Role Based Access Control (RBAC)
+```
+
+---
+
+# Current Database Version
+
+```
+05597c75037e
+```
+
+Latest Migration
+
+```
+Create Departments Table
+```
+
+---
+
+# Planned Modules
+
+- Departments
+- Products
+- Categories
+- Suppliers
+- Warehouses
+- Inventory
+- Purchase
+- Sales
+- Reports
+- Audit Logs
+
+---
+
+# Best Practices
+
+- Use Alembic for every schema change.
+- Never edit production tables manually.
+- Review autogenerated migrations before applying them.
+- Keep migrations focused on one feature.
+- Backup the database before production upgrades.
+- Keep audit fields consistent across all master tables.
