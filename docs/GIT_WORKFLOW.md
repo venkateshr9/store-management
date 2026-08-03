@@ -11,7 +11,7 @@ This document defines the Git workflow, branching strategy, versioning, commit m
 GitHub Repository
 
 ```
-https://github.com/<your-username>/store-management
+https://github.com/venkateshr9/store-management
 ```
 
 ---
@@ -137,7 +137,7 @@ Merge into main
 ## Clone
 
 ```bash
-git clone https://github.com/<username>/store-management.git
+git clone https://github.com/venkateshr9/store-management.git
 ```
 
 ---
