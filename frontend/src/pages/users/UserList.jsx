@@ -13,7 +13,10 @@ import UserViewDialog from "./UserViewDialog";
 import {
   getUsers,
   deleteUser,
+  changePassword,
 } from "../../services/userService";
+
+import ChangePasswordDialog from "./ChangePasswordDialog";
 
 export default function UserList() {
 
@@ -24,6 +27,8 @@ export default function UserList() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [viewOpen, setViewOpen] = useState(false);
+
+  const [passwordOpen, setPasswordOpen] = useState(false);
 
   const [search, setSearch] = useState("");
 
@@ -49,6 +54,14 @@ export default function UserList() {
   const handleView = (row) => {
     setSelected(row);
     setViewOpen(true);
+  };
+
+  const handleChangePassword = (row) => {
+
+    setSelected(row);
+
+    setPasswordOpen(true);
+
   };
 
   const handleDelete = async (row) => {
@@ -118,6 +131,7 @@ export default function UserList() {
              rows={filteredUsers}
              onView={handleView}
              onEdit={handleEdit}
+	     onChangePassword={handleChangePassword}
              onDelete={handleDelete}
 	  />
       </Paper>
@@ -134,6 +148,22 @@ export default function UserList() {
 
   	}}
 	/>
+	
+        <ChangePasswordDialog
+  	    open={passwordOpen}
+            user={selected}
+            onClose={() => setPasswordOpen(false)}
+            onSave={async (password) => {
+
+                await changePassword(
+                    selected.id,
+                    password
+                );
+
+                setPasswordOpen(false);
+
+            }}
+       />
 
       <UserViewDialog
         open={viewOpen}

@@ -6,6 +6,7 @@ import PlatformModuleList from "../pages/platform-modules/PlatformModuleList";
 import RoleList from "../pages/security/roles";
 import PermissionList from "../pages/security/permissions";
 import UserList from "../pages/users/UserList";
+import DepartmentList from "../pages/departments/DepartmentList";
 
 import PrivateRoute from "../auth/PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -30,6 +31,11 @@ export default function AppRoutes() {
       		path="/users"
       		element={<UserList />}
     	    />
+	    
+	    <Route
+                path="/departments"
+                element={<DepartmentList />}
+	    />
 
             <Route
               path="/platform-modules"

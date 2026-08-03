@@ -5,6 +5,7 @@ from app.repositories.user import UserRepository
 from app.schemas.user import (
     UserCreate,
     UserUpdate,
+    UserChangePassword,
 )
 
 from app.core.security import hash_password
@@ -170,6 +171,34 @@ class UserService:
         return self.repository.update(
             user,
             payload,
+        )
+
+    # ---------------------------------------------------------
+    # Change Password
+    # ---------------------------------------------------------
+
+    def change_password(
+        self,
+        user_id: int,
+        payload: UserChangePassword,
+    ) -> User:
+
+        user = self.repository.get(
+            user_id,
+        )
+
+        if user is None:
+
+            raise ValueError(
+                "User not found."
+            )
+
+        user.password_hash = hash_password(
+            payload.password,
+        )
+
+        return self.repository.update_password(
+            user,
         )
 
     # ---------------------------------------------------------

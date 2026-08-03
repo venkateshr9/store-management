@@ -15,6 +15,7 @@ from app.services.user import UserService
 from app.schemas.user import (
     UserCreate,
     UserUpdate,
+    UserChangePassword,
     UserResponse,
 )
 
@@ -122,6 +123,33 @@ def update_user(
             detail=str(exc),
         )
 
+# ---------------------------------------------------------
+# Change Password
+# ---------------------------------------------------------
+
+@router.put(
+    "/{user_id}/change-password",
+    response_model=UserResponse,
+)
+def change_password(
+    user_id: int,
+    payload: UserChangePassword,
+    service: UserService = Depends(get_service),
+):
+
+    try:
+
+        return service.change_password(
+            user_id,
+            payload,
+        )
+
+    except ValueError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
 
 # ---------------------------------------------------------
 # Delete

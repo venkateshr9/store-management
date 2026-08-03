@@ -10,12 +10,14 @@ import {
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
+import KeyIcon from "@mui/icons-material/Key";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function UserTable({
   rows,
   onView,
   onEdit,
+  onChangePassword,
   onDelete,
 }) {
 
@@ -77,39 +79,46 @@ export default function UserTable({
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 200,
       sortable: false,
+	
+	renderCell: (params) => (
 
-      renderCell: (params) => (
+  	   <Stack
+    	     direction="row"
+             spacing={1}
+           >
 
-        <Stack
-          direction="row"
-          spacing={1}
-        >
-
-          <IconButton
-            color="primary"
-            onClick={() => onView(params.row)}
-          >
+           <IconButton
+             color="primary"
+             onClick={() => onView(params.row)}
+           >
             <VisibilityIcon />
-          </IconButton>
+           </IconButton>
 
-          <IconButton
-            color="warning"
-            onClick={() => onEdit(params.row)}
-          >
-            <EditIcon />
-          </IconButton>
+           <IconButton
+             color="warning"
+             onClick={() => onEdit(params.row)}
+           >
+             <EditIcon />
+           </IconButton>
 
-          <IconButton
-            color="error"
-            onClick={() => onDelete(params.row)}
-          >
-            <DeleteIcon />
-          </IconButton>
+           <IconButton
+             color="secondary"
+             onClick={() => onChangePassword(params.row)}
+           >
+          <KeyIcon />
+         </IconButton>
 
-        </Stack>
-      ),
+         <IconButton
+           color="error"
+           onClick={() => onDelete(params.row)}
+         >
+        <DeleteIcon />
+        </IconButton>
+
+       </Stack>
+     ),
     },
 
   ];

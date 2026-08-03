@@ -158,7 +158,21 @@ class UserRepository:
         self.db.refresh(user)
 
         return user
+    
+    # ---------------------------------------------------------
+    # Update Password
+    # ---------------------------------------------------------
 
+    def update_password(
+        self,
+        user: User,
+    ) -> User:
+
+        self.db.commit()
+
+        self.db.refresh(user)
+
+        return user
     # ---------------------------------------------------------
     # Delete
     # ---------------------------------------------------------
