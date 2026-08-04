@@ -2,7 +2,6 @@ import React from "react";
 import { Chip } from "@mui/material";
 
 export default function StatusChip({ status }) {
-    console.log("StatusChip received:", status, typeof status);
 
     const value = String(status).toLowerCase();
 

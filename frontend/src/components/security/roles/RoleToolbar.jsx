@@ -23,12 +23,18 @@ export default function RoleToolbar({
 }) {
     return (
         <Stack
-            direction={{ xs: "column", md: "row" }}
-            spacing={2}
-            justifyContent="space-between"
-            alignItems={{ xs: "stretch", md: "center" }}
-        >
-            <Stack
+ 		direction={{ xs: "column", md: "row" }}
+    		spacing={2}
+    		sx={{
+        		justifyContent: "space-between",
+        		alignItems: {
+            			xs: "stretch",
+           	 		md: "center",
+        		},
+    		}}
+	>
+
+	    <Stack
                 direction={{ xs: "column", md: "row" }}
                 spacing={2}
                 sx={{ flex: 1 }}

@@ -33,21 +33,27 @@ export default function PlatformModuleToolbar({
                 boxShadow: 1,
             }}
         >
-            <Stack
-                direction={{ xs: "column", md: "row" }}
-                spacing={2}
-                justifyContent="space-between"
-                alignItems={{ xs: "stretch", md: "center" }}
-            >
-                <Typography variant="h5" fontWeight="bold">
+                <Stack
+    			direction={{ xs: "column", md: "row" }}
+    			spacing={2}
+    			sx={{
+        			justifyContent: "space-between",
+        			alignItems: {
+            				xs: "stretch",
+            				md: "center",
+        			},
+    			}}
+		>
+	    	<Typography variant="h5" fontWeight="bold">
                     Platform Modules
                 </Typography>
-
-                <Stack
-                    direction={{ xs: "column", md: "row" }}
-                    spacing={2}
-                    alignItems="center"
-                >
+		<Stack
+ 			direction={{ xs: "column", md: "row" }}
+    			spacing={2}
+    			sx={{
+        			alignItems: "center",
+    			}}
+		>
                     <TextField
                         label="Search"
                         size="small"
@@ -80,7 +86,7 @@ export default function PlatformModuleToolbar({
 
                     <Button
                         variant="contained"
-                        startIcon={<AddIcon />}
+                        startIcon={<AddIcon fontSize="small" />}
                         onClick={onAdd}
                     >
                         Add Module

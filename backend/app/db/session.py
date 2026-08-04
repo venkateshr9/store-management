@@ -34,15 +34,27 @@ SessionLocal = sessionmaker(
 # ---------------------------------------------------------
 # Database Dependency
 # ---------------------------------------------------------
-
 def get_db() -> Generator[Session, None, None]:
     """
     FastAPI dependency that provides a database session.
+
+    One transaction per request.
     """
 
     db = SessionLocal()
 
     try:
+
         yield db
+
+        db.commit()
+
+    except Exception:
+
+        db.rollback()
+
+        raise
+
     finally:
+
         db.close()

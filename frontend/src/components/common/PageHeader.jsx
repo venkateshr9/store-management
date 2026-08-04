@@ -8,12 +8,14 @@ export default function PageHeader({
 }) {
     return (
         <Box sx={{ mb: 3 }}>
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-            >
-                <Box>
+	    	<Stack
+    			direction="row"
+    			sx={{
+        			justifyContent: "space-between",
+        			alignItems: "center",
+    			}}
+		>
+	    	<Box>
                     <Typography
                         variant="h4"
                         fontWeight={700}

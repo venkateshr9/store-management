@@ -3,7 +3,7 @@ import {
     Backdrop,
     CircularProgress,
     Typography,
-    Stack,
+    Box,
 } from "@mui/material";
 
 export default function LoadingOverlay({
@@ -18,16 +18,20 @@ export default function LoadingOverlay({
                 zIndex: (theme) => theme.zIndex.drawer + 999,
             }}
         >
-            <Stack
-                spacing={2}
-                alignItems="center"
-            >
-                <CircularProgress color="inherit" />
+           <Box
+    		sx={{
+        		display: "flex",
+        		flexDirection: "column",
+        		alignItems: "center",
+        		gap: 2,
+    		}}
+	>     
+	    	<CircularProgress color="inherit" />
 
                 <Typography variant="body1">
                     {message}
                 </Typography>
-            </Stack>
+            </Box>
         </Backdrop>
     );
 }
