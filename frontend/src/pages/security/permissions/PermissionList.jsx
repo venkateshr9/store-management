@@ -13,15 +13,25 @@ import PermissionToolbar from "../../../components/security/permissions/Permissi
 
 import PermissionTable from "../../../components/security/permissions/PermissionTable";
 
+import PermissionDialog from "../../../components/security/permissions/PermissionDialog";
+
+import PermissionDeleteDialog from "../../../components/security/permissions/PermissionDeleteDialog";
+
 export default function PermissionList() {
 
     const {
 
-        permissions,
+    	permissions,
 
-        loading,
+    	loading,
 
-        refresh,
+    	refresh,
+
+    	createPermission,
+
+    	updatePermission,
+
+    	deletePermission,
 
     } = usePermissions();
 
@@ -29,6 +39,12 @@ export default function PermissionList() {
 
     const [module, setModule] = useState("");
 
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const [deleteOpen, setDeleteOpen] = useState(false);
+
+    const [selectedPermission, setSelectedPermission] = useState(null);
+	
     const filtered = permissions.filter((p) => {
 
         const matchesSearch =
@@ -80,7 +96,124 @@ export default function PermissionList() {
         ),
 
     ];
+    
+    const openCreateDialog = () => {
+    	setSelectedPermission(null);
+    	setDialogOpen(true);
+    };
 
+    const openEditDialog = (permission) => {
+    	setSelectedPermission(permission);
+    	setDialogOpen(true);
+    };
+
+    const openViewDialog = (permission) => {
+    	// For now View uses the same dialog.
+    	setSelectedPermission(permission);
+    	setDialogOpen(true);
+    };
+
+    const closeDialog = () => {
+    	setDialogOpen(false);
+    	setSelectedPermission(null);
+    };
+
+    const openDeleteDialog = (permission) => {
+    	setSelectedPermission(permission);
+    	setDeleteOpen(true);
+    };
+
+    const closeDeleteDialog = () => {
+    	setDeleteOpen(false);
+    	setSelectedPermission(null);
+    };
+
+    const handleSave = async (data) => {
+
+    console.log("Permission Update Payload:", data);
+
+    try {
+
+        if (selectedPermission) {
+
+            await updatePermission(
+                selectedPermission.id,
+                data
+            );
+
+        } else {
+
+            await createPermission(data);
+
+        }
+
+        closeDialog();
+
+        await refresh();
+
+    } catch (error) {
+
+        console.log("Response:", error.response);
+
+        console.log("Response Data:", error.response?.data);
+
+        console.error(error);
+
+    }
+
+};
+/*    const handleSave = async (data) => {
+
+    try {
+
+        if (selectedPermission) {
+
+            await updatePermission(
+                selectedPermission.id,
+                data
+            );
+
+        } else {
+
+            await createPermission(data);
+
+        }
+
+        closeDialog();
+
+        await refresh();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}; */
+
+const handleDelete = async () => {
+
+    if (!selectedPermission) {
+        return;
+    }
+
+    try {
+
+        await deletePermission(
+            selectedPermission.id
+        );
+
+        closeDeleteDialog();
+
+        await refresh();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+};
     return (
 
         <Box>
@@ -116,7 +249,7 @@ export default function PermissionList() {
 
                         onRefresh={refresh}
 
-                        onAdd={() => {}}
+                        onAdd={openCreateDialog}
 
                     />
 
@@ -126,19 +259,29 @@ export default function PermissionList() {
 
                         loading={loading}
 
-                        onView={(row) =>
-                            console.log(row)
-                        }
+			onView={openViewDialog}
 
-                        onEdit={(row) =>
-                            console.log(row)
-                        }
+			onEdit={openEditDialog}
 
-                        onDelete={(row) =>
-                            console.log(row)
-                        }
+			onDelete={openDeleteDialog}
 
                     />
+	            <PermissionDialog
+    			open={dialogOpen}
+    			mode={selectedPermission ? "edit" : "create"}
+    			permission={selectedPermission}
+    			loading={loading}
+    			onClose={closeDialog}
+    			onSave={handleSave}
+		   />
+
+		   <PermissionDeleteDialog
+    			open={deleteOpen}
+    			permission={selectedPermission}
+    			loading={loading}
+    			onClose={closeDeleteDialog}
+    			onConfirm={handleDelete}
+                   />
 
                 </CardContent>
 
