@@ -1,4 +1,5 @@
 from app.core.permissions import require_permission
+
 from app.models.user import User
 
 from fastapi import (
@@ -12,33 +13,29 @@ from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 
-from app.repositories.department import (
-    DepartmentRepository,
+from app.repositories.category import CategoryRepository
+from app.services.category import CategoryService
+
+from app.schemas.category import (
+    CategoryCreate,
+    CategoryUpdate,
+    CategoryResponse,
 )
 
-from app.services.department import (
-    DepartmentService,
-)
-
-from app.schemas.department import (
-    DepartmentCreate,
-    DepartmentUpdate,
-    DepartmentResponse,
-)
 
 router = APIRouter(
-    prefix="/departments",
-    tags=["Departments"],
+    prefix="/categories",
+    tags=["Categories"],
 )
 
 
 def get_service(
     db: Session = Depends(get_db),
-) -> DepartmentService:
+) -> CategoryService:
 
-    repository = DepartmentRepository(db)
+    repository = CategoryRepository(db)
 
-    return DepartmentService(repository)
+    return CategoryService(repository)
 
 
 # ---------------------------------------------------------
@@ -47,16 +44,16 @@ def get_service(
 
 @router.get(
     "/",
-    response_model=list[DepartmentResponse],
+    response_model=list[CategoryResponse],
 )
-def list_departments(
+def list_categories(
     current_user: User = Depends(
-        require_permission("departments:view")
+        require_permission("categories:view")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: CategoryService = Depends(get_service),
 ):
 
-    return service.list_departments()
+    return service.list_categories()
 
 
 # ---------------------------------------------------------
@@ -64,29 +61,29 @@ def list_departments(
 # ---------------------------------------------------------
 
 @router.get(
-    "/{department_id}",
-    response_model=DepartmentResponse,
+    "/{category_id}",
+    response_model=CategoryResponse,
 )
-def get_department(
-    department_id: int,
+def get_category(
+    category_id: int,
     current_user: User = Depends(
-        require_permission("departments:view")
+        require_permission("categories:view")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: CategoryService = Depends(get_service),
 ):
 
-    department = service.get_department(
-        department_id,
+    category = service.get_category(
+        category_id
     )
 
-    if department is None:
+    if category is None:
 
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Department not found.",
+            detail="Category not found.",
         )
 
-    return department
+    return category
 
 
 # ---------------------------------------------------------
@@ -95,21 +92,21 @@ def get_department(
 
 @router.post(
     "/",
-    response_model=DepartmentResponse,
+    response_model=CategoryResponse,
     status_code=status.HTTP_201_CREATED,
 )
-def create_department(
-    payload: DepartmentCreate,
+def create_category(
+    payload: CategoryCreate,
     current_user: User = Depends(
-        require_permission("departments:create")
+        require_permission("categories:create")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: CategoryService = Depends(get_service),
 ):
 
     try:
 
-        return service.create_department(
-            payload,
+        return service.create_category(
+            payload
         )
 
     except ValueError as exc:
@@ -125,22 +122,22 @@ def create_department(
 # ---------------------------------------------------------
 
 @router.put(
-    "/{department_id}",
-    response_model=DepartmentResponse,
+    "/{category_id}",
+    response_model=CategoryResponse,
 )
-def update_department(
-    department_id: int,
-    payload: DepartmentUpdate,
+def update_category(
+    category_id: int,
+    payload: CategoryUpdate,
     current_user: User = Depends(
-        require_permission("departments:update")
+        require_permission("categories:update")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: CategoryService = Depends(get_service),
 ):
 
     try:
 
-        return service.update_department(
-            department_id,
+        return service.update_category(
+            category_id,
             payload,
         )
 
@@ -157,21 +154,21 @@ def update_department(
 # ---------------------------------------------------------
 
 @router.delete(
-    "/{department_id}",
+    "/{category_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_department(
-    department_id: int,
+def delete_category(
+    category_id: int,
     current_user: User = Depends(
-        require_permission("departments:delete")
+        require_permission("categories:delete")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: CategoryService = Depends(get_service),
 ):
 
     try:
 
-        service.delete_department(
-            department_id,
+        service.delete_category(
+            category_id
         )
 
     except ValueError as exc:

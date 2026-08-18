@@ -6,3 +6,6 @@ from app.models.role_permission import RolePermission
 from app.models.user_role import UserRole
 from .platform_module import PlatformModule
 from .platform_module_field import PlatformModuleField
+from app.models.category import Category
+from app.models.supplier import Supplier
+from app.models.product import Product

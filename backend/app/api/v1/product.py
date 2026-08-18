@@ -12,33 +12,29 @@ from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 
-from app.repositories.department import (
-    DepartmentRepository,
+from app.repositories.product import ProductRepository
+from app.services.product import ProductService
+
+from app.schemas.product import (
+    ProductCreate,
+    ProductUpdate,
+    ProductResponse,
 )
 
-from app.services.department import (
-    DepartmentService,
-)
-
-from app.schemas.department import (
-    DepartmentCreate,
-    DepartmentUpdate,
-    DepartmentResponse,
-)
 
 router = APIRouter(
-    prefix="/departments",
-    tags=["Departments"],
+    prefix="/products",
+    tags=["Products"],
 )
 
 
 def get_service(
     db: Session = Depends(get_db),
-) -> DepartmentService:
+) -> ProductService:
 
-    repository = DepartmentRepository(db)
+    repository = ProductRepository(db)
 
-    return DepartmentService(repository)
+    return ProductService(repository)
 
 
 # ---------------------------------------------------------
@@ -47,16 +43,16 @@ def get_service(
 
 @router.get(
     "/",
-    response_model=list[DepartmentResponse],
+    response_model=list[ProductResponse],
 )
-def list_departments(
+def list_products(
     current_user: User = Depends(
-        require_permission("departments:view")
+        require_permission("items:view")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: ProductService = Depends(get_service),
 ):
 
-    return service.list_departments()
+    return service.list_products()
 
 
 # ---------------------------------------------------------
@@ -64,29 +60,29 @@ def list_departments(
 # ---------------------------------------------------------
 
 @router.get(
-    "/{department_id}",
-    response_model=DepartmentResponse,
+    "/{product_id}",
+    response_model=ProductResponse,
 )
-def get_department(
-    department_id: int,
+def get_product(
+    product_id: int,
     current_user: User = Depends(
-        require_permission("departments:view")
+        require_permission("items:view")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: ProductService = Depends(get_service),
 ):
 
-    department = service.get_department(
-        department_id,
+    product = service.get_product(
+        product_id
     )
 
-    if department is None:
+    if product is None:
 
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Department not found.",
+            detail="Product not found.",
         )
 
-    return department
+    return product
 
 
 # ---------------------------------------------------------
@@ -95,21 +91,21 @@ def get_department(
 
 @router.post(
     "/",
-    response_model=DepartmentResponse,
+    response_model=ProductResponse,
     status_code=status.HTTP_201_CREATED,
 )
-def create_department(
-    payload: DepartmentCreate,
+def create_product(
+    payload: ProductCreate,
     current_user: User = Depends(
-        require_permission("departments:create")
+        require_permission("items:create")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: ProductService = Depends(get_service),
 ):
 
     try:
 
-        return service.create_department(
-            payload,
+        return service.create_product(
+            payload
         )
 
     except ValueError as exc:
@@ -125,22 +121,22 @@ def create_department(
 # ---------------------------------------------------------
 
 @router.put(
-    "/{department_id}",
-    response_model=DepartmentResponse,
+    "/{product_id}",
+    response_model=ProductResponse,
 )
-def update_department(
-    department_id: int,
-    payload: DepartmentUpdate,
+def update_product(
+    product_id: int,
+    payload: ProductUpdate,
     current_user: User = Depends(
-        require_permission("departments:update")
+        require_permission("items:update")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: ProductService = Depends(get_service),
 ):
 
     try:
 
-        return service.update_department(
-            department_id,
+        return service.update_product(
+            product_id,
             payload,
         )
 
@@ -157,21 +153,21 @@ def update_department(
 # ---------------------------------------------------------
 
 @router.delete(
-    "/{department_id}",
+    "/{product_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_department(
-    department_id: int,
+def delete_product(
+    product_id: int,
     current_user: User = Depends(
-        require_permission("departments:delete")
+        require_permission("items:delete")
     ),
-    service: DepartmentService = Depends(get_service),
+    service: ProductService = Depends(get_service),
 ):
 
     try:
 
-        service.delete_department(
-            department_id,
+        service.delete_product(
+            product_id
         )
 
     except ValueError as exc:

@@ -8,8 +8,6 @@ import PermissionList from "../pages/security/permissions";
 import UserList from "../pages/users/UserList";
 import DepartmentList from "../pages/departments/DepartmentList";
 import CategoryList from "../pages/categories/CategoryList";
-import ProductList from "../pages/products/ProductList";
-import SupplierList from "../pages/suppliers/SupplierList";
 
 import PrivateRoute from "../auth/PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -42,14 +40,6 @@ export default function AppRoutes() {
 	    <Route
     		path="/categories"
     		element={<CategoryList />}
-	    />
-	    <Route
-  		path="/products"
-  		element={<ProductList />}
-	    />
-	    <Route
-                 path="/suppliers"
-                 element={<SupplierList />}
 	    />
             <Route
               path="/platform-modules"

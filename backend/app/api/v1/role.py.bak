@@ -1,6 +1,4 @@
 from __future__ import annotations
-from app.core.permissions import require_permission
-from app.models.user import User
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -42,9 +40,6 @@ def get_service(
 )
 def create_role(
     payload: RoleCreate,
-    current_user: User = Depends(
-        require_permission("roles:create")
-    ),
     service: RoleService = Depends(get_service),
 ):
     try:
@@ -58,41 +53,6 @@ def create_role(
 
 
 # ---------------------------------------------------------
-# List Roles
-# ---------------------------------------------------------
-
-@router.get(
-    "/",
-    response_model=list[RoleResponse],
-)
-def list_roles(
-    current_user: User = Depends(
-        require_permission("roles:view")
-    ),
-    service: RoleService = Depends(get_service),
-):
-    return service.list_roles()
-
-
-
-# ---------------------------------------------------------
-# List Active Roles
-# ---------------------------------------------------------
-
-@router.get(
-    "/active",
-    response_model=list[RoleResponse],
-)
-def list_active_roles(
-    current_user: User = Depends(
-        require_permission("roles:view")
-    ),
-    service: RoleService = Depends(get_service),
-):
-    return service.list_active_roles()
-
-
-# ---------------------------------------------------------
 # Get Role
 # ---------------------------------------------------------
 
@@ -102,9 +62,6 @@ def list_active_roles(
 )
 def get_role(
     role_id: int,
-    current_user: User = Depends(
-        require_permission("roles:view")
-    ),
     service: RoleService = Depends(get_service),
 ):
     role = service.get_role(role_id)
@@ -119,6 +76,34 @@ def get_role(
 
 
 # ---------------------------------------------------------
+# List Roles
+# ---------------------------------------------------------
+
+@router.get(
+    "/",
+    response_model=list[RoleResponse],
+)
+def list_roles(
+    service: RoleService = Depends(get_service),
+):
+    return service.list_roles()
+
+
+# ---------------------------------------------------------
+# List Active Roles
+# ---------------------------------------------------------
+
+@router.get(
+    "/active",
+    response_model=list[RoleResponse],
+)
+def list_active_roles(
+    service: RoleService = Depends(get_service),
+):
+    return service.list_active_roles()
+
+
+# ---------------------------------------------------------
 # Update Role
 # ---------------------------------------------------------
 
@@ -129,9 +114,6 @@ def get_role(
 def update_role(
     role_id: int,
     payload: RoleUpdate,
-    current_user: User = Depends(
-        require_permission("roles:update")
-    ),
     service: RoleService = Depends(get_service),
 ):
     try:
@@ -157,9 +139,6 @@ def update_role(
 )
 def delete_role(
     role_id: int,
-    current_user: User = Depends(
-        require_permission("roles:delete")
-    ),
     service: RoleService = Depends(get_service),
 ):
     try:

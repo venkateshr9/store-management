@@ -58,41 +58,6 @@ def create_role(
 
 
 # ---------------------------------------------------------
-# List Roles
-# ---------------------------------------------------------
-
-@router.get(
-    "/",
-    response_model=list[RoleResponse],
-)
-def list_roles(
-    current_user: User = Depends(
-        require_permission("roles:view")
-    ),
-    service: RoleService = Depends(get_service),
-):
-    return service.list_roles()
-
-
-
-# ---------------------------------------------------------
-# List Active Roles
-# ---------------------------------------------------------
-
-@router.get(
-    "/active",
-    response_model=list[RoleResponse],
-)
-def list_active_roles(
-    current_user: User = Depends(
-        require_permission("roles:view")
-    ),
-    service: RoleService = Depends(get_service),
-):
-    return service.list_active_roles()
-
-
-# ---------------------------------------------------------
 # Get Role
 # ---------------------------------------------------------
 
@@ -116,6 +81,40 @@ def get_role(
         )
 
     return role
+
+
+# ---------------------------------------------------------
+# List Roles
+# ---------------------------------------------------------
+
+@router.get(
+    "/",
+    response_model=list[RoleResponse],
+)
+def list_roles(
+    current_user: User = Depends(
+        require_permission("roles:view")
+    ),
+    service: RoleService = Depends(get_service),
+):
+    return service.list_roles()
+
+
+# ---------------------------------------------------------
+# List Active Roles
+# ---------------------------------------------------------
+
+@router.get(
+    "/active",
+    response_model=list[RoleResponse],
+)
+def list_active_roles(
+    current_user: User = Depends(
+        require_permission("roles:view")
+    ),
+    service: RoleService = Depends(get_service),
+):
+    return service.list_active_roles()
 
 
 # ---------------------------------------------------------

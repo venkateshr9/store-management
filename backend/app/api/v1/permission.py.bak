@@ -1,6 +1,3 @@
-from app.core.permissions import require_permission
-from app.models.user import User
-
 from fastapi import (
     APIRouter,
     Depends,
@@ -39,9 +36,6 @@ def get_service(
     response_model=list[PermissionResponse],
 )
 def list_permissions(
-    current_user: User = Depends(
-        require_permission("permissions:view")
-    ),
     service: PermissionService = Depends(get_service),
 ):
     return service.list_permissions()
@@ -53,9 +47,6 @@ def list_permissions(
 )
 def get_permission(
     permission_id: int,
-    current_user: User = Depends(
-        require_permission("permissions:view")
-    ),
     service: PermissionService = Depends(get_service),
 ):
     permission = service.get_permission(permission_id)
@@ -76,9 +67,6 @@ def get_permission(
 )
 def create_permission(
     payload: PermissionCreate,
-    current_user: User = Depends(
-        require_permission("permissions:assign")
-    ),
     service: PermissionService = Depends(get_service),
 ):
     try:
@@ -98,9 +86,6 @@ def create_permission(
 def update_permission(
     permission_id: int,
     payload: PermissionUpdate,
-    current_user: User = Depends(
-        require_permission("permissions:assign")
-    ),
     service: PermissionService = Depends(get_service),
 ):
     try:
@@ -122,9 +107,6 @@ def update_permission(
 )
 def delete_permission(
     permission_id: int,
-    current_user: User = Depends(
-        require_permission("permissions:assign")
-    ),
     service: PermissionService = Depends(get_service),
 ):
     try:

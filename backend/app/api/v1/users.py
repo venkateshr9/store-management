@@ -1,3 +1,6 @@
+from app.core.permissions import require_permission
+from app.models.user import User
+
 from fastapi import (
     APIRouter,
     Depends,
@@ -43,6 +46,9 @@ def get_service(
     response_model=list[UserResponse],
 )
 def list_users(
+    current_user: User = Depends(
+        require_permission("users:view")
+    ),
     service: UserService = Depends(get_service),
 ):
 
@@ -59,6 +65,9 @@ def list_users(
 )
 def get_user(
     user_id: int,
+    current_user: User = Depends(
+        require_permission("users:view")
+    ),
     service: UserService = Depends(get_service),
 ):
 
@@ -84,6 +93,9 @@ def get_user(
 )
 def create_user(
     payload: UserCreate,
+    current_user: User = Depends(
+        require_permission("users:create")
+    ),
     service: UserService = Depends(get_service),
 ):
 
@@ -108,6 +120,9 @@ def create_user(
 def update_user(
     user_id: int,
     payload: UserUpdate,
+    current_user: User = Depends(
+        require_permission("users:update")
+    ),
     service: UserService = Depends(get_service),
 ):
 
@@ -123,6 +138,7 @@ def update_user(
             detail=str(exc),
         )
 
+
 # ---------------------------------------------------------
 # Change Password
 # ---------------------------------------------------------
@@ -134,6 +150,9 @@ def update_user(
 def change_password(
     user_id: int,
     payload: UserChangePassword,
+    current_user: User = Depends(
+        require_permission("users:update")
+    ),
     service: UserService = Depends(get_service),
 ):
 
@@ -151,6 +170,7 @@ def change_password(
             detail=str(exc),
         )
 
+
 # ---------------------------------------------------------
 # Delete
 # ---------------------------------------------------------
@@ -161,6 +181,9 @@ def change_password(
 )
 def delete_user(
     user_id: int,
+    current_user: User = Depends(
+        require_permission("users:delete")
+    ),
     service: UserService = Depends(get_service),
 ):
 

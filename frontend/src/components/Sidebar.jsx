@@ -10,6 +10,7 @@ import {
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import BusinessIcon from "@mui/icons-material/Business";
+import CategoryIcon from "@mui/icons-material/Category";
 import InventoryIcon from "@mui/icons-material/Inventory2";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import AssessmentIcon from "@mui/icons-material/Assessment";
@@ -26,6 +27,7 @@ const menus = [
   { text: "Permissions", icon: <SecurityIcon />, path: "/security/permissions" },
   { text: "Users", icon: <PeopleIcon />, path: "/users" },
   { text: "Departments", icon: <BusinessIcon />, path: "/departments" },
+  { text: "Categories", icon: <CategoryIcon />, path: "/categories" },
   { text: "Products", icon: <InventoryIcon />, path: "/products" },
   { text: "Suppliers", icon: <LocalShippingIcon />, path: "/suppliers" },
   { text: "Reports", icon: <AssessmentIcon />, path: "/reports" },
