@@ -41,6 +41,8 @@ class UserBase(BaseSchema):
 
     department_id: int | None = None
 
+    role_id: int | None = None
+
     is_active: bool = True
 
     remarks: str | None = Field(
@@ -90,6 +92,8 @@ class UserUpdate(BaseSchema):
     )
 
     department_id: int | None = None
+
+    role_id: int | None = None
 
     is_active: bool | None = None
 

@@ -62,6 +62,7 @@ class UserService:
             email=payload.email,
             mobile=payload.mobile,
             department_id=payload.department_id,
+            role_id=payload.role_id,
             is_active=payload.is_active,
             remarks=payload.remarks,
             password_hash=password_hash,
