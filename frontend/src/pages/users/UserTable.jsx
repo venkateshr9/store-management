@@ -19,10 +19,10 @@ export default function UserTable({
   onEdit,
   onChangePassword,
   onDelete,
+  canUpdate,
+  canDelete,
 }) {
-
   const columns = [
-
     {
       field: "employee_no",
       headerName: "Employee No",
@@ -79,48 +79,60 @@ export default function UserTable({
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: canUpdate && canDelete ? 200 : 130,
       sortable: false,
-	
-	renderCell: (params) => (
 
-  	   <Stack
-    	     direction="row"
-             spacing={1}
-           >
-
-           <IconButton
-             color="primary"
-             onClick={() => onView(params.row)}
-           >
+      renderCell: (params) => (
+        <Stack
+          direction="row"
+          spacing={1}
+        >
+          <IconButton
+            color="primary"
+            onClick={() =>
+              onView(params.row)
+            }
+          >
             <VisibilityIcon />
-           </IconButton>
+          </IconButton>
 
-           <IconButton
-             color="warning"
-             onClick={() => onEdit(params.row)}
-           >
-             <EditIcon />
-           </IconButton>
+          {canUpdate && (
+            <>
+              <IconButton
+                color="warning"
+                onClick={() =>
+                  onEdit(params.row)
+                }
+              >
+                <EditIcon />
+              </IconButton>
 
-           <IconButton
-             color="secondary"
-             onClick={() => onChangePassword(params.row)}
-           >
-          <KeyIcon />
-         </IconButton>
+              <IconButton
+                color="secondary"
+                onClick={() =>
+                  onChangePassword(
+                    params.row
+                  )
+                }
+              >
+                <KeyIcon />
+              </IconButton>
+            </>
+          )}
 
-         <IconButton
-           color="error"
-           onClick={() => onDelete(params.row)}
-         >
-        <DeleteIcon />
-        </IconButton>
-
-       </Stack>
-     ),
+          {canDelete && (
+            <IconButton
+              color="error"
+              onClick={() =>
+                onDelete(params.row)
+              }
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
+        </Stack>
+      ),
     },
-
   ];
 
   return (

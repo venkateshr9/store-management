@@ -9,6 +9,7 @@ import UserToolbar from "./UserToolbar";
 import UserTable from "./UserTable";
 import UserDialog from "./UserDialog";
 import UserViewDialog from "./UserViewDialog";
+import ChangePasswordDialog from "./ChangePasswordDialog";
 
 import {
   getUsers,
@@ -16,18 +17,22 @@ import {
   changePassword,
 } from "../../services/userService";
 
-import ChangePasswordDialog from "./ChangePasswordDialog";
+import usePermission from "../../hooks/usePermission";
 
 export default function UserList() {
+  const {
+    hasPermission,
+  } = usePermission();
+
+  const canCreate = hasPermission("users:create");
+  const canUpdate = hasPermission("users:update");
+  const canDelete = hasPermission("users:delete");
 
   const [users, setUsers] = useState([]);
-
   const [selected, setSelected] = useState(null);
 
   const [dialogOpen, setDialogOpen] = useState(false);
-
   const [viewOpen, setViewOpen] = useState(false);
-
   const [passwordOpen, setPasswordOpen] = useState(false);
 
   const [search, setSearch] = useState("");
@@ -42,11 +47,19 @@ export default function UserList() {
   }, []);
 
   const handleAdd = () => {
+    if (!canCreate) {
+      return;
+    }
+
     setSelected(null);
     setDialogOpen(true);
   };
 
   const handleEdit = (row) => {
+    if (!canUpdate) {
+      return;
+    }
+
     setSelected(row);
     setDialogOpen(true);
   };
@@ -57,52 +70,46 @@ export default function UserList() {
   };
 
   const handleChangePassword = (row) => {
+    if (!canUpdate) {
+      return;
+    }
 
     setSelected(row);
-
     setPasswordOpen(true);
-
   };
 
   const handleDelete = async (row) => {
-
-    if (!window.confirm("Delete this user?"))
+    if (!canDelete) {
       return;
+    }
+
+    if (!window.confirm("Delete this user?")) {
+      return;
+    }
 
     await deleteUser(row.id);
 
-    loadUsers();
+    await loadUsers();
   };
 
-  const filteredUsers = users.filter((u) =>
-
-    u.employee_no
+  const filteredUsers = users.filter(
+    (u) =>
+      u.employee_no
+        ?.toLowerCase()
+        .includes(search.toLowerCase()) ||
+      u.username
+        ?.toLowerCase()
+        .includes(search.toLowerCase()) ||
+      u.full_name
+        ?.toLowerCase()
+        .includes(search.toLowerCase()) ||
+      u.email
         ?.toLowerCase()
         .includes(search.toLowerCase())
-
-    ||
-
-    u.username
-        ?.toLowerCase()
-        .includes(search.toLowerCase())
-
-    ||
-
-    u.full_name
-        ?.toLowerCase()
-        .includes(search.toLowerCase())
-
-    ||
-
-    u.email
-        ?.toLowerCase()
-        .includes(search.toLowerCase())
-
-	);
+  );
 
   return (
     <>
-
       <Typography
         variant="h3"
         fontWeight={700}
@@ -113,65 +120,64 @@ export default function UserList() {
 
       <Typography
         color="text.secondary"
-        sx={{ mb:3 }}
+        sx={{ mb: 3 }}
       >
         Manage system users
       </Typography>
 
-      <Paper sx={{ p:3 }}>
+      <Paper sx={{ p: 3 }}>
+        <UserToolbar
+          search={search}
+          setSearch={setSearch}
+          onRefresh={loadUsers}
+          onAdd={handleAdd}
+          canCreate={canCreate}
+        />
 
-	<UserToolbar
-  	    search={search}
-    	    setSearch={setSearch}
-            onRefresh={loadUsers}
-            onAdd={handleAdd}
-         />
-
-	 <UserTable
-             rows={filteredUsers}
-             onView={handleView}
-             onEdit={handleEdit}
-	     onChangePassword={handleChangePassword}
-             onDelete={handleDelete}
-	  />
+        <UserTable
+          rows={filteredUsers}
+          onView={handleView}
+          onEdit={handleEdit}
+          onChangePassword={handleChangePassword}
+          onDelete={handleDelete}
+          canUpdate={canUpdate}
+          canDelete={canDelete}
+        />
       </Paper>
 
       <UserDialog
-  	open={dialogOpen}
-  	user={selected}
-  	onClose={() => setDialogOpen(false)}
-  	onSaved={() => {
+        open={dialogOpen}
+        user={selected}
+        onClose={() => setDialogOpen(false)}
+        onSaved={() => {
+          setDialogOpen(false);
+          loadUsers();
+        }}
+      />
 
-    		setDialogOpen(false);
+      <ChangePasswordDialog
+        open={passwordOpen}
+        user={selected}
+        onClose={() => setPasswordOpen(false)}
+        onSave={async (password) => {
+          if (!canUpdate) {
+            return;
+          }
 
-    		loadUsers();
+          await changePassword(
+            selected.id,
+            password
+          );
 
-  	}}
-	/>
-	
-        <ChangePasswordDialog
-  	    open={passwordOpen}
-            user={selected}
-            onClose={() => setPasswordOpen(false)}
-            onSave={async (password) => {
-
-                await changePassword(
-                    selected.id,
-                    password
-                );
-
-                setPasswordOpen(false);
-
-            }}
-       />
+          setPasswordOpen(false);
+        }}
+      />
 
       <UserViewDialog
         open={viewOpen}
-        onClose={()=>setViewOpen(false)}
+        onClose={() => setViewOpen(false)}
         user={selected}
       />
-
     </>
   );
-
 }

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import usePermission from "../../hooks/usePermission";
+
 import {
   Dialog,
   DialogTitle,
@@ -16,6 +18,9 @@ export default function ChangePasswordDialog({
   user,
 }) {
 
+  const { hasPermission } = usePermission();
+  const canUpdate = hasPermission("users:update");
+
   const [password, setPassword] = useState("");
 
   useEffect(() => {
@@ -27,6 +32,10 @@ export default function ChangePasswordDialog({
   }, [open]);
 
   const handleSave = async () => {
+
+    if (!canUpdate) {
+      return;
+    }
 
     if (password.length < 8) {
 
@@ -95,12 +104,14 @@ export default function ChangePasswordDialog({
           Cancel
         </Button>
 
-        <Button
-          variant="contained"
-          onClick={handleSave}
-        >
-          Change Password
-        </Button>
+        {canUpdate && (
+          <Button
+            variant="contained"
+            onClick={handleSave}
+          >
+            Change Password
+          </Button>
+        )}
 
       </DialogActions>
 

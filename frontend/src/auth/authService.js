@@ -13,6 +13,16 @@ export const login = async (username, password) => {
 };
 
 /**
+ * Get current authenticated user including
+ * roles and permissions.
+ */
+export const fetchCurrentUser = async () => {
+  const response = await api.get("/auth/me");
+
+  return response.data;
+};
+
+/**
  * Logout user
  */
 export const logout = () => {
@@ -26,15 +36,24 @@ export const logout = () => {
  */
 export const saveAuth = (authData) => {
   if (authData.access_token) {
-    localStorage.setItem("access_token", authData.access_token);
+    localStorage.setItem(
+      "access_token",
+      authData.access_token
+    );
   }
 
   if (authData.refresh_token) {
-    localStorage.setItem("refresh_token", authData.refresh_token);
+    localStorage.setItem(
+      "refresh_token",
+      authData.refresh_token
+    );
   }
 
   if (authData.user) {
-    localStorage.setItem("user", JSON.stringify(authData.user));
+    localStorage.setItem(
+      "user",
+      JSON.stringify(authData.user)
+    );
   }
 };
 

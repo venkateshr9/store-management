@@ -12,19 +12,17 @@ export default function UserToolbar({
   setSearch,
   onRefresh,
   onAdd,
+  canCreate,
 }) {
   return (
-    <Box
-      sx={{
-        mb: 3,
-      }}
-    >
-
+    <Box sx={{ mb: 3 }}>
       <TextField
         fullWidth
         placeholder="Search users..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) =>
+          setSearch(e.target.value)
+        }
         sx={{ mb: 2 }}
       />
 
@@ -42,16 +40,16 @@ export default function UserToolbar({
           Refresh
         </Button>
 
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={onAdd}
-        >
-          Add User
-        </Button>
-
+        {canCreate && (
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={onAdd}
+          >
+            Add User
+          </Button>
+        )}
       </Box>
-
     </Box>
   );
 }
