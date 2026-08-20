@@ -1,6 +1,7 @@
 import {
   Chip,
   IconButton,
+  Stack,
 } from "@mui/material";
 
 import {
@@ -25,6 +26,7 @@ export default function ProductTable({
       headerName: "Code",
       flex: 1,
       minWidth: 120,
+      headerAlign: "center",
     },
 
     {
@@ -32,6 +34,7 @@ export default function ProductTable({
       headerName: "Product Name",
       flex: 2,
       minWidth: 180,
+      headerAlign: "center",
     },
 
     {
@@ -39,6 +42,7 @@ export default function ProductTable({
       headerName: "SKU",
       flex: 1,
       minWidth: 120,
+      headerAlign: "center",
       valueGetter: (value) => value || "-",
     },
 
@@ -47,6 +51,7 @@ export default function ProductTable({
       headerName: "Barcode",
       flex: 1,
       minWidth: 130,
+      headerAlign: "center",
       valueGetter: (value) => value || "-",
     },
 
@@ -54,6 +59,8 @@ export default function ProductTable({
       field: "unit",
       headerName: "Unit",
       width: 100,
+      headerAlign: "center",
+      align: "center",
     },
 
     {
@@ -61,6 +68,8 @@ export default function ProductTable({
       headerName: "Purchase Price",
       width: 140,
       type: "number",
+      headerAlign: "center",
+      align: "center",
     },
 
     {
@@ -68,6 +77,8 @@ export default function ProductTable({
       headerName: "Selling Price",
       width: 140,
       type: "number",
+      headerAlign: "center",
+      align: "center",
     },
 
     {
@@ -75,12 +86,16 @@ export default function ProductTable({
       headerName: "Tax %",
       width: 90,
       type: "number",
+      headerAlign: "center",
+      align: "center",
     },
 
     {
       field: "is_active",
       headerName: "Status",
       width: 110,
+      headerAlign: "center",
+      align: "center",
 
       renderCell: (params) => (
         <Chip
@@ -103,59 +118,118 @@ export default function ProductTable({
       field: "actions",
       headerName: "Actions",
       width: 150,
+      headerAlign: "center",
+      align: "center",
       sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
 
       renderCell: (params) => (
-        <>
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          justifyContent="center"
+          sx={{ width: "100%" }}
+        >
           <IconButton
+            size="small"
             color="primary"
             onClick={() =>
               onView(params.row)
             }
           >
-            <Visibility />
+            <Visibility fontSize="small" />
           </IconButton>
 
           <IconButton
+            size="small"
             color="warning"
             onClick={() =>
               onEdit(params.row)
             }
           >
-            <Edit />
+            <Edit fontSize="small" />
           </IconButton>
 
           <IconButton
+            size="small"
             color="error"
             onClick={() =>
               onDelete(params.row)
             }
           >
-            <Delete />
+            <Delete fontSize="small" />
           </IconButton>
-        </>
+        </Stack>
       ),
     },
   ];
 
   return (
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      autoHeight
-      pageSizeOptions={[
-        10,
-        25,
-        50,
-      ]}
-      initialState={{
-        pagination: {
-          paginationModel: {
-            pageSize: 10,
-          },
-        },
+    <div
+      style={{
+        width: "100%",
+        border: "1px solid #D9E1EA",
+        borderRadius: "8px",
+        overflow: "hidden",
+        backgroundColor: "#FFFFFF",
       }}
-      disableRowSelectionOnClick
-    />
+    >
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        autoHeight
+        pageSizeOptions={[10, 25, 50]}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+        }}
+        disableRowSelectionOnClick
+
+        sx={{
+          border: "none",
+
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#1F3A5F",
+            color: "#FFFFFF",
+            fontWeight: 700,
+            borderBottom: "1px solid #D9E1EA",
+          },
+
+          "& .MuiDataGrid-columnHeader": {
+            backgroundColor: "#1F3A5F",
+            color: "#FFFFFF",
+            fontWeight: 700,
+            borderRight: "1px solid #D9E1EA",
+          },
+
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontWeight: 700,
+            color: "#FFFFFF",
+          },
+
+          "& .MuiDataGrid-cell": {
+            borderRight: "1px solid #D9E1EA",
+            borderBottom: "1px solid #D9E1EA",
+          },
+
+          "& .MuiDataGrid-row": {
+            borderBottom: "1px solid #D9E1EA",
+          },
+
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "1px solid #D9E1EA",
+          },
+
+          "& .MuiDataGrid-columnSeparator": {
+            color: "#D9E1EA",
+          },
+        }}
+      />
+    </div>
   );
 }

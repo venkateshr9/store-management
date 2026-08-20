@@ -44,17 +44,22 @@ export default function RoleToolbar({
                 }}
             >
                 <TextField
-                    size="small"
                     label="Search"
-                    placeholder="Role Code / Role Name"
+                    size="small"
                     value={search}
-                    onChange={(e) => onSearchChange(e.target.value)}
-                    sx={{ minWidth: 300 }}
+                    onChange={(e) =>
+                        onSearchChange(e.target.value)
+                    }
+                    sx={{
+                        minWidth: 250,
+                    }}
                 />
 
                 <FormControl
                     size="small"
-                    sx={{ minWidth: 180 }}
+                    sx={{
+                        minWidth: 150,
+                    }}
                 >
                     <InputLabel>Status</InputLabel>
 
@@ -65,9 +70,17 @@ export default function RoleToolbar({
                             onStatusChange(e.target.value)
                         }
                     >
-                        <MenuItem value="all">All</MenuItem>
-                        <MenuItem value="active">Active</MenuItem>
-                        <MenuItem value="inactive">Inactive</MenuItem>
+                        <MenuItem value="all">
+                            All
+                        </MenuItem>
+
+                        <MenuItem value="active">
+                            Active
+                        </MenuItem>
+
+                        <MenuItem value="inactive">
+                            Inactive
+                        </MenuItem>
                     </Select>
                 </FormControl>
 
@@ -81,7 +94,7 @@ export default function RoleToolbar({
 
                 <Button
                     variant="contained"
-                    startIcon={<AddIcon />}
+                    startIcon={<AddIcon fontSize="small" />}
                     onClick={onAdd}
                 >
                     Add Role

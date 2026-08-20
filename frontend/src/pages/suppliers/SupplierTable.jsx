@@ -1,6 +1,7 @@
 import {
   Chip,
   IconButton,
+  Box,
 } from "@mui/material";
 
 import {
@@ -25,6 +26,8 @@ export default function SupplierTable({
       headerName: "Code",
       flex: 1,
       minWidth: 120,
+      headerAlign: "center",
+      align: "center",
     },
 
     {
@@ -32,6 +35,8 @@ export default function SupplierTable({
       headerName: "Supplier Name",
       flex: 2,
       minWidth: 180,
+      headerAlign: "center",
+      align: "left",
     },
 
     {
@@ -39,6 +44,8 @@ export default function SupplierTable({
       headerName: "Contact Person",
       flex: 1.5,
       minWidth: 150,
+      headerAlign: "center",
+      align: "left",
     },
 
     {
@@ -46,6 +53,8 @@ export default function SupplierTable({
       headerName: "Phone",
       flex: 1,
       minWidth: 120,
+      headerAlign: "center",
+      align: "center",
     },
 
     {
@@ -53,12 +62,16 @@ export default function SupplierTable({
       headerName: "Email",
       flex: 1.5,
       minWidth: 180,
+      headerAlign: "center",
+      align: "left",
     },
 
     {
       field: "is_active",
       headerName: "Status",
       width: 120,
+      headerAlign: "center",
+      align: "center",
 
       renderCell: (params) => (
         <Chip
@@ -73,49 +86,114 @@ export default function SupplierTable({
       field: "actions",
       headerName: "Actions",
       width: 150,
+      headerAlign: "center",
+      align: "center",
       sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
 
       renderCell: (params) => (
-        <>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 0.5,
+            width: "100%",
+          }}
+        >
           <IconButton
+            size="small"
             color="primary"
             onClick={() => onView(params.row)}
           >
-            <Visibility />
+            <Visibility fontSize="small" />
           </IconButton>
 
           <IconButton
+            size="small"
             color="warning"
             onClick={() => onEdit(params.row)}
           >
-            <Edit />
+            <Edit fontSize="small" />
           </IconButton>
 
           <IconButton
+            size="small"
             color="error"
             onClick={() => onDelete(params.row)}
           >
-            <Delete />
+            <Delete fontSize="small" />
           </IconButton>
-        </>
+        </Box>
       ),
     },
   ];
 
   return (
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      autoHeight
-      pageSizeOptions={[10, 25, 50]}
-      initialState={{
-        pagination: {
-          paginationModel: {
-            pageSize: 10,
-          },
+    <Box
+      sx={{
+        width: "100%",
+        border: "1px solid #D9E1EA",
+        borderRadius: 2,
+        overflow: "hidden",
+
+        "& .MuiDataGrid-root": {
+          border: "none",
+        },
+
+        "& .MuiDataGrid-columnHeaders": {
+          backgroundColor: "#1F3A5F",
+          color: "#FFFFFF",
+          borderBottom: "1px solid #D9E1EA",
+        },
+
+        "& .MuiDataGrid-columnHeader": {
+          backgroundColor: "#1F3A5F",
+        },
+
+        "& .MuiDataGrid-columnHeaderTitle": {
+          fontWeight: 700,
+          color: "#FFFFFF",
+          textAlign: "center",
+        },
+
+        "& .MuiDataGrid-columnSeparator": {
+          color: "#D9E1EA",
+        },
+
+        "& .MuiDataGrid-cell": {
+          borderRight: "1px solid #D9E1EA",
+          borderBottom: "1px solid #D9E1EA",
+        },
+
+        "& .MuiDataGrid-row": {
+          borderBottom: "1px solid #D9E1EA",
+        },
+
+        "& .MuiDataGrid-row:hover": {
+          backgroundColor: "#F8FAFC",
+        },
+
+        "& .MuiDataGrid-footerContainer": {
+          borderTop: "1px solid #D9E1EA",
         },
       }}
-      disableRowSelectionOnClick
-    />
+    >
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        autoHeight
+        pageSizeOptions={[10, 25, 50]}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+        }}
+        disableRowSelectionOnClick
+      />
+    </Box>
   );
 }

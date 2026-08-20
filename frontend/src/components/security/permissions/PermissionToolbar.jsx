@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
     Box,
     Button,
@@ -5,6 +7,7 @@ import {
     InputLabel,
     MenuItem,
     Select,
+    Stack,
     TextField,
 } from "@mui/material";
 
@@ -12,89 +15,93 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function PermissionToolbar({
-
     search,
     setSearch,
-
     module,
     setModule,
-
     modules = [],
-
     onRefresh,
-
     onAdd,
-
 }) {
-
     return (
-
         <Box
-            display="flex"
-            gap={2}
-            mb={2}
+            sx={{
+                mb: 3,
+                p: 2,
+                borderRadius: 2,
+                backgroundColor: "background.paper",
+                boxShadow: 1,
+            }}
         >
-
-            <TextField
-                label="Search"
-                value={search}
-                onChange={(e) =>
-                    setSearch(e.target.value)
-                }
-                fullWidth
-            />
-
-            <FormControl sx={{ minWidth: 220 }}>
-
-                <InputLabel>
-                    Module
-                </InputLabel>
-
-                <Select
-                    value={module}
-                    label="Module"
+            <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={2}
+                sx={{
+                    alignItems: {
+                        xs: "stretch",
+                        md: "center",
+                    },
+                    justifyContent: "flex-start",
+                }}
+            >
+                <TextField
+                    label="Search"
+                    size="small"
+                    value={search}
                     onChange={(e) =>
-                        setModule(e.target.value)
+                        setSearch(e.target.value)
                     }
+                    sx={{
+                        minWidth: 250,
+                    }}
+                />
+
+                <FormControl
+                    size="small"
+                    sx={{
+                        minWidth: 150,
+                    }}
                 >
+                    <InputLabel>Module</InputLabel>
 
-                    <MenuItem value="">
-                        All
-                    </MenuItem>
-
-                    {modules.map((m) => (
-
-                        <MenuItem
-                            key={m}
-                            value={m}
-                        >
-                            {m}
+                    <Select
+                        value={module}
+                        label="Module"
+                        onChange={(e) =>
+                            setModule(e.target.value)
+                        }
+                    >
+                        <MenuItem value="">
+                            All
                         </MenuItem>
 
-                    ))}
+                        {modules.map((m) => (
+                            <MenuItem
+                                key={m}
+                                value={m}
+                            >
+                                {m}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                </Select>
+                <Button
+                    variant="outlined"
+                    startIcon={<RefreshIcon />}
+                    onClick={onRefresh}
+                >
+                    Refresh
+                </Button>
 
-            </FormControl>
-
-            <Button
-                variant="outlined"
-                startIcon={<RefreshIcon />}
-                onClick={onRefresh}
-            >
-                Refresh
-            </Button>
-
-            <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                onClick={onAdd}
-            >
-                Add Permission
-            </Button>
-
+                <Button
+                    variant="contained"
+                    startIcon={<AddIcon fontSize="small" />}
+                    onClick={onAdd}
+                >
+                    Add Permission
+                </Button>
+            </Stack>
         </Box>
-
     );
-
 }

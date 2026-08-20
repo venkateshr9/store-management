@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Stack,
   TextField,
 } from "@mui/material";
 
@@ -15,23 +16,38 @@ export default function UserToolbar({
   canCreate,
 }) {
   return (
-    <Box sx={{ mb: 3 }}>
-      <TextField
-        fullWidth
-        placeholder="Search users..."
-        value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-        sx={{ mb: 2 }}
-      />
-
-      <Box
+    <Box
+      sx={{
+        mb: 3,
+        p: 2,
+        borderRadius: 2,
+        backgroundColor: "background.paper",
+        boxShadow: 1,
+      }}
+    >
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={2}
         sx={{
-          display: "flex",
-          gap: 2,
+          alignItems: {
+            xs: "stretch",
+            md: "center",
+          },
+          justifyContent: "flex-start",
         }}
       >
+        <TextField
+          label="Search"
+          size="small"
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+          sx={{
+            minWidth: 250,
+          }}
+        />
+
         <Button
           variant="outlined"
           startIcon={<RefreshIcon />}
@@ -43,13 +59,13 @@ export default function UserToolbar({
         {canCreate && (
           <Button
             variant="contained"
-            startIcon={<AddIcon />}
+            startIcon={<AddIcon fontSize="small" />}
             onClick={onAdd}
           >
             Add User
           </Button>
         )}
-      </Box>
+      </Stack>
     </Box>
   );
 }

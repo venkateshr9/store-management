@@ -18,13 +18,12 @@ export default function RoleTable({
     onDelete,
     onManagePermissions,
 }) {
-
     const columns = [
-
         {
             field: "role_code",
             headerName: "Role Code",
             width: 170,
+            headerAlign: "center",
         },
 
         {
@@ -32,6 +31,7 @@ export default function RoleTable({
             headerName: "Role Name",
             flex: 1,
             minWidth: 220,
+            headerAlign: "center",
         },
 
         {
@@ -39,12 +39,15 @@ export default function RoleTable({
             headerName: "Description",
             flex: 1,
             minWidth: 260,
+            headerAlign: "center",
         },
 
         {
             field: "is_system",
             headerName: "System",
             width: 100,
+            headerAlign: "center",
+            align: "center",
             renderCell: (params) =>
                 params.row.is_system ? "Yes" : "No",
         },
@@ -53,6 +56,8 @@ export default function RoleTable({
             field: "status",
             headerName: "Status",
             width: 120,
+            headerAlign: "center",
+            align: "center",
             renderCell: (params) => (
                 <StatusChip status={params.row.status} />
             ),
@@ -65,10 +70,19 @@ export default function RoleTable({
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
+            headerAlign: "center",
+            align: "center",
 
             renderCell: (params) => (
-                <Box sx={{ display: "flex", gap: 0.5 }}>
-
+                <Box
+                    sx={{
+                        display: "flex",
+                        gap: 0.5,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                    }}
+                >
                     <Tooltip title="View Role">
                         <IconButton
                             size="small"
@@ -110,16 +124,62 @@ export default function RoleTable({
                             <DeleteIcon fontSize="small" />
                         </IconButton>
                     </Tooltip>
-
                 </Box>
             ),
         },
-
     ];
 
     return (
-        <Box sx={{ height: 650, width: "100%" }}>
+        <Box
+            sx={{
+                height: 650,
+                width: "100%",
+                border: "1px solid #D9E1EA",
+                borderRadius: 2,
+                overflow: "hidden",
+                backgroundColor: "#FFFFFF",
 
+                "& .MuiDataGrid-root": {
+                    border: "none",
+                },
+
+                "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: "#1F3A5F",
+                    color: "#FFFFFF",
+                    fontWeight: 700,
+                    borderBottom: "1px solid #D9E1EA",
+                },
+
+                "& .MuiDataGrid-columnHeader": {
+                    backgroundColor: "#1F3A5F",
+                    color: "#FFFFFF",
+                    fontWeight: 700,
+                    borderRight: "1px solid #D9E1EA",
+                },
+
+                "& .MuiDataGrid-columnHeaderTitle": {
+                    fontWeight: 700,
+                    color: "#FFFFFF",
+                },
+
+                "& .MuiDataGrid-cell": {
+                    borderRight: "1px solid #D9E1EA",
+                    borderBottom: "1px solid #D9E1EA",
+                },
+
+                "& .MuiDataGrid-row": {
+                    borderBottom: "1px solid #D9E1EA",
+                },
+
+                "& .MuiDataGrid-footerContainer": {
+                    borderTop: "1px solid #D9E1EA",
+                },
+
+                "& .MuiDataGrid-columnSeparator": {
+                    color: "#D9E1EA",
+                },
+            }}
+        >
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -136,7 +196,6 @@ export default function RoleTable({
                 }}
                 disableRowSelectionOnClick
             />
-
         </Box>
     );
 }

@@ -1,13 +1,14 @@
-import {
-  Stack,
-  TextField,
-  Button,
-} from "@mui/material";
+import React from "react";
 
 import {
-  Refresh,
-  Add,
-} from "@mui/icons-material";
+  Box,
+  Button,
+  Stack,
+  TextField,
+} from "@mui/material";
+
+import RefreshIcon from "@mui/icons-material/Refresh";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function DepartmentToolbar({
   search,
@@ -15,43 +16,56 @@ export default function DepartmentToolbar({
   onRefresh,
   onAdd,
 }) {
-
   return (
-
-    <Stack
-      direction="row"
-      spacing={2}
-      sx={{ mb: 3 }}
+    <Box
+      sx={{
+        mb: 3,
+        p: 2,
+        borderRadius: 2,
+        backgroundColor: "background.paper",
+        boxShadow: 1,
+      }}
     >
-
-      <TextField
-        label="Search Department"
-        size="small"
-        value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-        sx={{ width: 350 }}
-      />
-
-      <Button
-        variant="outlined"
-        startIcon={<Refresh />}
-        onClick={onRefresh}
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={2}
+        sx={{
+          alignItems: {
+            xs: "stretch",
+            md: "center",
+          },
+          justifyContent: "flex-start",
+        }}
       >
-        Refresh
-      </Button>
+        <TextField
+          label="Search"
+          size="small"
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+          sx={{
+            flex: 1,
+            minWidth: 250,
+          }}
+        />
 
-      <Button
-        variant="contained"
-        startIcon={<Add />}
-        onClick={onAdd}
-      >
-        Add Department
-      </Button>
+        <Button
+          variant="outlined"
+          startIcon={<RefreshIcon />}
+          onClick={onRefresh}
+        >
+          Refresh
+        </Button>
 
-    </Stack>
-
+        <Button
+          variant="contained"
+          startIcon={<AddIcon fontSize="small" />}
+          onClick={onAdd}
+        >
+          Add Department
+        </Button>
+      </Stack>
+    </Box>
   );
-
 }
