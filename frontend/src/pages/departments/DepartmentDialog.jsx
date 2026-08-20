@@ -95,7 +95,6 @@ export default function DepartmentDialog({
 
     } catch (err) {
 
-      console.log(err.response?.data);
 
       alert(
         JSON.stringify(

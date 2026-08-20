@@ -8,7 +8,6 @@ import {
 
 import useRoles from "../../../hooks/useRoles";
 
-import PageHeader from "../../../components/common/PageHeader";
 import LoadingOverlay from "../../../components/common/LoadingOverlay";
 
 import RoleToolbar from "../../../components/security/roles/RoleToolbar";
@@ -89,7 +88,6 @@ export default function RoleList() {
     };
 
     const openManagePermissions = (role) => {
-        console.log("Manage permissions for role:", role);
     };
 
     const openPermissionDialog = (role) => {
@@ -213,11 +211,6 @@ export default function RoleList() {
     return (
 
         <Box sx={{ p: 3 }}>
-
-            <PageHeader
-                title="Role Management"
-                subtitle="Manage application roles"
-            />
 
             <RoleToolbar
                 search={search}

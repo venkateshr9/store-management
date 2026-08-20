@@ -127,7 +127,6 @@ export default function PlatformModuleDialog({
         	...payload
     	} = form;
 
-    	console.log("Platform Module Payload:", payload);
 
     	onSave(payload);
     };

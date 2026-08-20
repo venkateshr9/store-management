@@ -95,7 +95,6 @@ export default function CategoryDialog({
 
     } catch (err) {
 
-      console.log(err.response?.data);
 
       alert(
         JSON.stringify(

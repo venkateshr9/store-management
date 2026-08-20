@@ -105,21 +105,6 @@ export default function DepartmentList() {
   return (
     <>
 
-      <Typography
-        variant="h3"
-        fontWeight={700}
-        gutterBottom
-      >
-        Department Management
-      </Typography>
-
-      <Typography
-        color="text.secondary"
-        sx={{ mb: 3 }}
-      >
-        Manage departments
-      </Typography>
-
       <Paper sx={{ p: 3 }}>
 
         <DepartmentToolbar

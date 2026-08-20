@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import {
   Paper,
-  Typography,
 } from "@mui/material";
 
 import ProductToolbar from "./ProductToolbar";
@@ -198,21 +197,6 @@ export default function ProductList() {
 
   return (
     <>
-
-      <Typography
-        variant="h3"
-        fontWeight={700}
-        gutterBottom
-      >
-        Product Management
-      </Typography>
-
-      <Typography
-        color="text.secondary"
-        sx={{ mb: 3 }}
-      >
-        Manage products, pricing, stock settings and suppliers
-      </Typography>
 
       <Paper sx={{ p: 3 }}>
 

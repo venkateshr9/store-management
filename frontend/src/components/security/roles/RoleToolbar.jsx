@@ -1,13 +1,14 @@
 import React from "react";
 
 import {
-    Stack,
-    TextField,
+    Box,
+    Button,
     FormControl,
     InputLabel,
-    Select,
     MenuItem,
-    Button,
+    Select,
+    Stack,
+    TextField,
 } from "@mui/material";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -22,22 +23,25 @@ export default function RoleToolbar({
     onAdd,
 }) {
     return (
-        <Stack
- 		direction={{ xs: "column", md: "row" }}
-    		spacing={2}
-    		sx={{
-        		justifyContent: "space-between",
-        		alignItems: {
-            			xs: "stretch",
-           	 		md: "center",
-        		},
-    		}}
-	>
-
-	    <Stack
+        <Box
+            sx={{
+                mb: 3,
+                p: 2,
+                borderRadius: 2,
+                backgroundColor: "background.paper",
+                boxShadow: 1,
+            }}
+        >
+            <Stack
                 direction={{ xs: "column", md: "row" }}
                 spacing={2}
-                sx={{ flex: 1 }}
+                sx={{
+                    alignItems: {
+                        xs: "stretch",
+                        md: "center",
+                    },
+                    justifyContent: "flex-start",
+                }}
             >
                 <TextField
                     size="small"
@@ -48,22 +52,25 @@ export default function RoleToolbar({
                     sx={{ minWidth: 300 }}
                 />
 
-                <FormControl size="small" sx={{ minWidth: 180 }}>
+                <FormControl
+                    size="small"
+                    sx={{ minWidth: 180 }}
+                >
                     <InputLabel>Status</InputLabel>
 
                     <Select
                         value={status}
                         label="Status"
-                        onChange={(e) => onStatusChange(e.target.value)}
+                        onChange={(e) =>
+                            onStatusChange(e.target.value)
+                        }
                     >
                         <MenuItem value="all">All</MenuItem>
                         <MenuItem value="active">Active</MenuItem>
                         <MenuItem value="inactive">Inactive</MenuItem>
                     </Select>
                 </FormControl>
-            </Stack>
 
-            <Stack direction="row" spacing={2}>
                 <Button
                     variant="outlined"
                     startIcon={<RefreshIcon />}
@@ -80,6 +87,6 @@ export default function RoleToolbar({
                     Add Role
                 </Button>
             </Stack>
-        </Stack>
+        </Box>
     );
 }

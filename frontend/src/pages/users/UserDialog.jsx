@@ -107,7 +107,6 @@ export default function UserDialog({
     delete payload.password;
   }
 
-  console.log(payload);
 
   try {
 
@@ -121,7 +120,6 @@ export default function UserDialog({
 
   } catch (err) {
 
-    console.log(err.response?.data);
 
     alert(
       JSON.stringify(

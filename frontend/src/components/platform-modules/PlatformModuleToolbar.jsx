@@ -9,7 +9,6 @@ import {
     Select,
     Stack,
     TextField,
-    Typography,
 } from "@mui/material";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -33,65 +32,59 @@ export default function PlatformModuleToolbar({
                 boxShadow: 1,
             }}
         >
-                <Stack
-    			direction={{ xs: "column", md: "row" }}
-    			spacing={2}
-    			sx={{
-        			justifyContent: "space-between",
-        			alignItems: {
-            				xs: "stretch",
-            				md: "center",
-        			},
-    			}}
-		>
-	    	<Typography variant="h5" fontWeight="bold">
-                    Platform Modules
-                </Typography>
-		<Stack
- 			direction={{ xs: "column", md: "row" }}
-    			spacing={2}
-    			sx={{
-        			alignItems: "center",
-    			}}
-		>
-                    <TextField
-                        label="Search"
-                        size="small"
-                        value={search}
-                        onChange={(e) => onSearchChange(e.target.value)}
-                        sx={{ minWidth: 250 }}
-                    />
+            <Stack
+                direction={{ xs: "column", md: "row" }}
+                spacing={2}
+                sx={{
+                    alignItems: {
+                        xs: "stretch",
+                        md: "center",
+                    },
+                    justifyContent: "flex-start",
+                }}
+            >
+                <TextField
+                    label="Search"
+                    size="small"
+                    value={search}
+                    onChange={(e) => onSearchChange(e.target.value)}
+                    sx={{ minWidth: 250 }}
+                />
 
-                    <FormControl size="small" sx={{ minWidth: 150 }}>
-                        <InputLabel>Status</InputLabel>
+                <FormControl
+                    size="small"
+                    sx={{ minWidth: 150 }}
+                >
+                    <InputLabel>Status</InputLabel>
 
-                        <Select
-                            value={status}
-                            label="Status"
-                            onChange={(e) => onStatusChange(e.target.value)}
-                        >
-                            <MenuItem value="all">All</MenuItem>
-                            <MenuItem value="active">Active</MenuItem>
-                            <MenuItem value="inactive">Inactive</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <Button
-                        variant="outlined"
-                        startIcon={<RefreshIcon />}
-                        onClick={onRefresh}
+                    <Select
+                        value={status}
+                        label="Status"
+                        onChange={(e) =>
+                            onStatusChange(e.target.value)
+                        }
                     >
-                        Refresh
-                    </Button>
+                        <MenuItem value="all">All</MenuItem>
+                        <MenuItem value="active">Active</MenuItem>
+                        <MenuItem value="inactive">Inactive</MenuItem>
+                    </Select>
+                </FormControl>
 
-                    <Button
-                        variant="contained"
-                        startIcon={<AddIcon fontSize="small" />}
-                        onClick={onAdd}
-                    >
-                        Add Module
-                    </Button>
-                </Stack>
+                <Button
+                    variant="outlined"
+                    startIcon={<RefreshIcon />}
+                    onClick={onRefresh}
+                >
+                    Refresh
+                </Button>
+
+                <Button
+                    variant="contained"
+                    startIcon={<AddIcon fontSize="small" />}
+                    onClick={onAdd}
+                >
+                    Add Module
+                </Button>
             </Stack>
         </Box>
     );

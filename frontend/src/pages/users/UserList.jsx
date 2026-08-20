@@ -121,21 +121,6 @@ export default function UserList() {
 
   return (
     <>
-      <Typography
-        variant="h3"
-        fontWeight={700}
-        gutterBottom
-      >
-        User Management
-      </Typography>
-
-      <Typography
-        color="text.secondary"
-        sx={{ mb: 3 }}
-      >
-        Manage system users
-      </Typography>
-
       <Paper sx={{ p: 3 }}>
         <UserToolbar
           search={search}

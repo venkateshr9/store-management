@@ -4,7 +4,6 @@ import {
     Box,
     Card,
     CardContent,
-    Typography,
 } from "@mui/material";
 
 import usePermissions from "../../../hooks/usePermissions";
@@ -130,7 +129,6 @@ export default function PermissionList() {
 
     const handleSave = async (data) => {
 
-    console.log("Permission Update Payload:", data);
 
     try {
 
@@ -153,9 +151,7 @@ export default function PermissionList() {
 
     } catch (error) {
 
-        console.log("Response:", error.response);
 
-        console.log("Response Data:", error.response?.data);
 
         console.error(error);
 
@@ -217,21 +213,6 @@ const handleDelete = async () => {
     return (
 
         <Box>
-
-            <Typography
-                variant="h4"
-                fontWeight={700}
-                mb={1}
-            >
-                Permission Management
-            </Typography>
-
-            <Typography
-                color="text.secondary"
-                mb={3}
-            >
-                Manage application permissions
-            </Typography>
 
             <Card>
 

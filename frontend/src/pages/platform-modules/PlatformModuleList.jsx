@@ -8,7 +8,6 @@ import {
 
 import usePlatformModules from "../../hooks/usePlatformModules";
 
-import PageHeader from "../../components/common/PageHeader";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
 
 import PlatformModuleToolbar from "../../components/platform-modules/PlatformModuleToolbar";
@@ -176,11 +175,6 @@ export default function PlatformModuleList() {
     };
     return (
         <Box sx={{ p: 3 }}>
-
-            <PageHeader
-                title="Platform Modules"
-                subtitle="Manage platform modules"
-            />
 
             <PlatformModuleToolbar
                 search={search}

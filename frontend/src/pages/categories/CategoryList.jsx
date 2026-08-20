@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import {
   Paper,
-  Typography,
 } from "@mui/material";
 
 import CategoryToolbar from "./CategoryToolbar";
@@ -139,21 +138,6 @@ export default function CategoryList() {
 
   return (
     <>
-
-      <Typography
-        variant="h3"
-        fontWeight={700}
-        gutterBottom
-      >
-        Category Management
-      </Typography>
-
-      <Typography
-        color="text.secondary"
-        sx={{ mb: 3 }}
-      >
-        Manage product categories
-      </Typography>
 
       <Paper sx={{ p: 3 }}>
 

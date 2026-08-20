@@ -283,10 +283,12 @@ export default function Sidebar() {
 
                       <ListItemText
                         primary={menu.text}
-                        primaryTypographyProps={{
-                          fontSize: "0.875rem",
-                          fontWeight: active ? 600 : 500,
-                          noWrap: true,
+                        slotProps={{
+                          primary: {
+                            fontSize: "0.875rem",
+                            fontWeight: active ? 600 : 500,
+                            noWrap: true,
+                          },
                         }}
                       />
                     </ListItemButton>
