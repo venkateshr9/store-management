@@ -22,6 +22,11 @@ from app.schemas.user import (
     UserResponse,
 )
 
+from app.schemas.user_role import (
+    UserRoleResponse,
+    UserRoleUpdate,
+)
+
 router = APIRouter(
     prefix="/users",
     tags=["Users"],
@@ -58,6 +63,74 @@ def list_users(
 # ---------------------------------------------------------
 # Get
 # ---------------------------------------------------------
+# ---------------------------------------------------------
+# User Roles
+# ---------------------------------------------------------
+
+@router.get(
+    "/{user_id}/roles",
+    response_model=list[UserRoleResponse],
+)
+def get_user_roles(
+    user_id: int,
+    current_user: User = Depends(
+        require_permission("users:view")
+    ),
+    service: UserService = Depends(get_service),
+):
+
+    try:
+        roles = service.get_user_roles(user_id)
+
+        return [
+            UserRoleResponse(
+                role_id=role.id,
+                role_code=role.role_code,
+                role_name=role.role_name,
+            )
+            for role in roles
+        ]
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        )
+
+
+@router.put(
+    "/{user_id}/roles",
+    response_model=list[UserRoleResponse],
+)
+def update_user_roles(
+    user_id: int,
+    payload: UserRoleUpdate,
+    current_user: User = Depends(
+        require_permission("users:update")
+    ),
+    service: UserService = Depends(get_service),
+):
+
+    try:
+        roles = service.update_user_roles(
+            user_id,
+            payload.role_ids,
+        )
+
+        return [
+            UserRoleResponse(
+                role_id=role.id,
+                role_code=role.role_code,
+                role_name=role.role_name,
+            )
+            for role in roles
+        ]
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
 
 @router.get(
     "/{user_id}",

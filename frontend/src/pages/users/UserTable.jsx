@@ -12,6 +12,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import KeyIcon from "@mui/icons-material/Key";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SecurityIcon from "@mui/icons-material/Security";
 
 export default function UserTable({
   rows,
@@ -19,6 +20,7 @@ export default function UserTable({
   onEdit,
   onChangePassword,
   onDelete,
+  onManageRoles,
   canUpdate,
   canDelete,
 }) {
@@ -79,7 +81,7 @@ export default function UserTable({
     {
       field: "actions",
       headerName: "Actions",
-      width: canUpdate && canDelete ? 200 : 130,
+      width: canUpdate && canDelete ? 250 : canUpdate ? 200 : 130,
       sortable: false,
 
       renderCell: (params) => (
@@ -116,6 +118,18 @@ export default function UserTable({
                 }
               >
                 <KeyIcon />
+              </IconButton>
+
+              <IconButton
+                color="primary"
+                onClick={() =>
+                  onManageRoles(
+                    params.row
+                  )
+                }
+                title="Manage Roles"
+              >
+                <SecurityIcon />
               </IconButton>
             </>
           )}

@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from sqlalchemy import select, delete
+
+from app.models.role import Role
+from app.models.user_role import UserRole
+
 from app.models.user import User
 from app.repositories.user import UserRepository
 from app.schemas.user import (
@@ -199,6 +204,85 @@ class UserService:
         return self.repository.update_password(
             user,
         )
+
+    # ---------------------------------------------------------
+    # User Roles
+    # ---------------------------------------------------------
+
+    def get_user_roles(
+        self,
+        user_id: int,
+    ) -> list[Role]:
+
+        user = self.repository.get(user_id)
+
+        if user is None:
+            raise ValueError("User not found.")
+
+        db = self.repository.db
+
+        stmt = (
+            select(Role)
+            .join(
+                UserRole,
+                UserRole.role_id == Role.id,
+            )
+            .where(
+                UserRole.user_id == user_id
+            )
+            .order_by(Role.role_name)
+        )
+
+        return list(db.scalars(stmt).all())
+
+    def update_user_roles(
+        self,
+        user_id: int,
+        role_ids: list[int],
+    ) -> list[Role]:
+
+        user = self.repository.get(user_id)
+
+        if user is None:
+            raise ValueError("User not found.")
+
+        db = self.repository.db
+
+        # Remove existing assignments
+        db.execute(
+            delete(UserRole).where(
+                UserRole.user_id == user_id
+            )
+        )
+
+        # Empty list means remove all roles
+        if role_ids:
+
+            stmt = (
+                select(Role.id)
+                .where(Role.id.in_(role_ids))
+            )
+
+            valid_role_ids = set(
+                db.scalars(stmt).all()
+            )
+
+            if len(valid_role_ids) != len(set(role_ids)):
+                raise ValueError(
+                    "One or more selected roles do not exist."
+                )
+
+            for role_id in sorted(valid_role_ids):
+                db.add(
+                    UserRole(
+                        user_id=user_id,
+                        role_id=role_id,
+                    )
+                )
+
+        db.commit()
+
+        return self.get_user_roles(user_id)
 
     # ---------------------------------------------------------
     # Delete

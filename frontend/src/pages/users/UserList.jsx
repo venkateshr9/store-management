@@ -10,6 +10,7 @@ import UserTable from "./UserTable";
 import UserDialog from "./UserDialog";
 import UserViewDialog from "./UserViewDialog";
 import ChangePasswordDialog from "./ChangePasswordDialog";
+import UserRoleDialog from "./UserRoleDialog";
 
 import {
   getUsers,
@@ -34,6 +35,7 @@ export default function UserList() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
+  const [roleOpen, setRoleOpen] = useState(false);
 
   const [search, setSearch] = useState("");
 
@@ -76,6 +78,15 @@ export default function UserList() {
 
     setSelected(row);
     setPasswordOpen(true);
+  };
+
+  const handleManageRoles = (row) => {
+    if (!canUpdate) {
+      return;
+    }
+
+    setSelected(row);
+    setRoleOpen(true);
   };
 
   const handleDelete = async (row) => {
@@ -139,6 +150,7 @@ export default function UserList() {
           onView={handleView}
           onEdit={handleEdit}
           onChangePassword={handleChangePassword}
+          onManageRoles={handleManageRoles}
           onDelete={handleDelete}
           canUpdate={canUpdate}
           canDelete={canDelete}
@@ -177,6 +189,16 @@ export default function UserList() {
         open={viewOpen}
         onClose={() => setViewOpen(false)}
         user={selected}
+      />
+
+      <UserRoleDialog
+        open={roleOpen}
+        user={selected}
+        onClose={() => setRoleOpen(false)}
+        onSaved={async () => {
+          setRoleOpen(false);
+          await loadUsers();
+        }}
       />
     </>
   );

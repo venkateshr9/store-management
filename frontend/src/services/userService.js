@@ -34,3 +34,19 @@ export const changePassword = async (id, password) => {
 
   return response.data;
 };
+
+export const getUserRoles = async (id) => {
+  const response = await api.get(`/users/${id}/roles`);
+  return response.data;
+};
+
+export const updateUserRoles = async (id, roleIds) => {
+  const response = await api.put(
+    `/users/${id}/roles`,
+    {
+      role_ids: roleIds,
+    }
+  );
+
+  return response.data;
+};
