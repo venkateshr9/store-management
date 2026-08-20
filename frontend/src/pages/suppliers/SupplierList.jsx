@@ -147,21 +147,6 @@ export default function SupplierList() {
 
   return (
     <>
-      <Typography
-        variant="h3"
-        fontWeight={700}
-        gutterBottom
-      >
-        Supplier Management
-      </Typography>
-
-      <Typography
-        color="text.secondary"
-        sx={{ mb: 3 }}
-      >
-        Manage suppliers
-      </Typography>
-
       <Paper sx={{ p: 3 }}>
         <SupplierToolbar
           search={search}
