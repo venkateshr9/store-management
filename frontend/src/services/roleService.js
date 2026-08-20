@@ -29,3 +29,11 @@ const roleService = {
 };
 
 export default roleService;
+
+export const getRolePermissions = (roleId) =>
+    api.get(`${BASE_URL}/${roleId}/permissions`);
+
+export const updateRolePermissions = (roleId, permissionIds) =>
+    api.put(`${BASE_URL}/${roleId}/permissions`, {
+        permission_ids: permissionIds,
+    });

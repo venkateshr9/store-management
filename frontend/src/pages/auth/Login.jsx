@@ -24,7 +24,7 @@ import AuthContext from "../../auth/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { setAuthenticated } = useContext(AuthContext);
+  const { loadCurrentUser } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -44,7 +44,9 @@ export default function Login() {
 
       saveAuth(auth);
 
-      setAuthenticated(true);
+      // Hydrate the authenticated user, roles and permissions
+      // from /auth/me before entering the application.
+      await loadCurrentUser();
 
       navigate("/dashboard");
 

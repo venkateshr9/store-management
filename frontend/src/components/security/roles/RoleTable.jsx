@@ -1,11 +1,12 @@
 import React from "react";
 
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SecurityIcon from "@mui/icons-material/Security";
 
 import StatusChip from "../../common/StatusChip";
 
@@ -15,6 +16,7 @@ export default function RoleTable({
     onView,
     onEdit,
     onDelete,
+    onManagePermissions,
 }) {
 
     const columns = [
@@ -42,7 +44,7 @@ export default function RoleTable({
         {
             field: "is_system",
             headerName: "System",
-            width: 120,
+            width: 100,
             renderCell: (params) =>
                 params.row.is_system ? "Yes" : "No",
         },
@@ -59,39 +61,57 @@ export default function RoleTable({
         {
             field: "actions",
             headerName: "Actions",
-            width: 160,
+            width: 210,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
 
             renderCell: (params) => (
-                <>
+                <Box sx={{ display: "flex", gap: 0.5 }}>
 
-                    <IconButton
-                        size="small"
-                        color="primary"
-                        onClick={() => onView(params.row)}
-                    >
-                        <VisibilityIcon fontSize="small" />
-                    </IconButton>
+                    <Tooltip title="View Role">
+                        <IconButton
+                            size="small"
+                            color="primary"
+                            onClick={() => onView(params.row)}
+                        >
+                            <VisibilityIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
 
-                    <IconButton
-                        size="small"
-                        color="warning"
-                        onClick={() => onEdit(params.row)}
-                    >
-                        <EditIcon fontSize="small" />
-                    </IconButton>
+                    <Tooltip title="Manage Permissions">
+                        <IconButton
+                            size="small"
+                            color="secondary"
+                            onClick={() =>
+                                onManagePermissions(params.row)
+                            }
+                        >
+                            <SecurityIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
 
-                    <IconButton
-                        size="small"
-                        color="error"
-                        onClick={() => onDelete(params.row)}
-                    >
-                        <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    <Tooltip title="Edit Role">
+                        <IconButton
+                            size="small"
+                            color="warning"
+                            onClick={() => onEdit(params.row)}
+                        >
+                            <EditIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
 
-                </>
+                    <Tooltip title="Delete Role">
+                        <IconButton
+                            size="small"
+                            color="error"
+                            onClick={() => onDelete(params.row)}
+                        >
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+
+                </Box>
             ),
         },
 

@@ -12,6 +12,10 @@ from app.schemas.role import (
     RoleResponse,
     RoleUpdate,
 )
+from app.schemas.role_permission import (
+    RolePermissionResponse,
+    RolePermissionUpdate,
+)
 from app.services.role import RoleService
 
 router = APIRouter(
@@ -143,6 +147,68 @@ def update_role(
     except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
+
+
+# ---------------------------------------------------------
+# Get Role Permissions
+# ---------------------------------------------------------
+
+@router.get(
+    "/{role_id}/permissions",
+    response_model=RolePermissionResponse,
+)
+def get_role_permissions(
+    role_id: int,
+    current_user: User = Depends(
+        require_permission("roles:view")
+    ),
+    service: RoleService = Depends(get_service),
+):
+    try:
+        permission_ids = service.get_permission_ids(role_id)
+
+        return RolePermissionResponse(
+            permission_ids=permission_ids
+        )
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        )
+
+
+# ---------------------------------------------------------
+# Update Role Permissions
+# ---------------------------------------------------------
+
+@router.put(
+    "/{role_id}/permissions",
+    response_model=RolePermissionResponse,
+)
+def update_role_permissions(
+    role_id: int,
+    payload: RolePermissionUpdate,
+    current_user: User = Depends(
+        require_permission("roles:update")
+    ),
+    service: RoleService = Depends(get_service),
+):
+    try:
+        permission_ids = service.update_permission_ids(
+            role_id,
+            payload.permission_ids,
+        )
+
+        return RolePermissionResponse(
+            permission_ids=permission_ids
+        )
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=str(exc),
         )
 

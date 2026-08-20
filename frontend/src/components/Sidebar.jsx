@@ -89,6 +89,19 @@ export default function Sidebar() {
   const location = useLocation();
   const { hasPermission } = usePermission();
 
+  console.log("========== RBAC SIDEBAR DEBUG ==========");
+  console.log("dashboard:view:", hasPermission("dashboard:view"));
+  console.log("users:view:", hasPermission("users:view"));
+  console.log("departments:view:", hasPermission("departments:view"));
+  console.log("categories:view:", hasPermission("categories:view"));
+  console.log("items:view:", hasPermission("items:view"));
+  console.log("suppliers:view:", hasPermission("suppliers:view"));
+  console.log("platform_modules:view:", hasPermission("platform_modules:view"));
+  console.log("roles:view:", hasPermission("roles:view"));
+  console.log("permissions:view:", hasPermission("permissions:view"));
+  console.log("reports:view:", hasPermission("reports:view"));
+  console.log("========================================");
+
   const visibleMenus = menus.filter((menu) =>
     hasPermission(menu.permission)
   );

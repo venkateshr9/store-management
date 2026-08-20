@@ -15,6 +15,7 @@ import RoleToolbar from "../../../components/security/roles/RoleToolbar";
 import RoleTable from "../../../components/security/roles/RoleTable";
 import RoleDialog from "../../../components/security/roles/RoleDialog";
 import RoleDeleteDialog from "../../../components/security/roles/RoleDeleteDialog";
+import RolePermissionDialog from "../../../components/security/roles/RolePermissionDialog";
 
 export default function RoleList() {
 
@@ -32,6 +33,7 @@ export default function RoleList() {
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const [permissionOpen, setPermissionOpen] = useState(false);
 
     const [selectedRole, setSelectedRole] = useState(null);
 
@@ -84,6 +86,20 @@ export default function RoleList() {
     const openViewDialog = (role) => {
         setSelectedRole(role);
         setDialogOpen(true);
+    };
+
+    const openManagePermissions = (role) => {
+        console.log("Manage permissions for role:", role);
+    };
+
+    const openPermissionDialog = (role) => {
+        setSelectedRole(role);
+        setPermissionOpen(true);
+    };
+
+    const closePermissionDialog = () => {
+        setPermissionOpen(false);
+        setSelectedRole(null);
     };
 
     const closeDialog = () => {
@@ -220,6 +236,7 @@ export default function RoleList() {
                     onView={openViewDialog}
                     onEdit={openEditDialog}
                     onDelete={openDeleteDialog}
+                    onManagePermissions={openPermissionDialog}
                 />
 
             </Box>
@@ -239,6 +256,19 @@ export default function RoleList() {
                 loading={loading}
                 onClose={closeDeleteDialog}
                 onConfirm={handleDelete}
+            />
+
+            <RolePermissionDialog
+                open={permissionOpen}
+                role={selectedRole}
+                onClose={closePermissionDialog}
+                onSaved={() =>
+                    setSnackbar({
+                        open: true,
+                        severity: "success",
+                        message: "Role permissions updated successfully.",
+                    })
+                }
             />
 
             <LoadingOverlay

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from app.models.role import Role
+from app.models.role_permission import RolePermission
 from app.repositories.role import RoleRepository
 from app.schemas.role import (
     RoleCreate,
@@ -96,6 +97,66 @@ class RoleService:
             role,
             payload,
         )
+
+    # ---------------------------------------------------------
+    # Permissions
+    # ---------------------------------------------------------
+
+    def get_permission_ids(
+        self,
+        role_id: int,
+    ) -> list[int]:
+
+        role = self.repository.get(role_id)
+
+        if role is None:
+            raise ValueError("Role not found.")
+
+        db = self.repository.db
+
+        rows = (
+            db.query(RolePermission.permission_id)
+            .filter(RolePermission.role_id == role_id)
+            .all()
+        )
+
+        return [row[0] for row in rows]
+
+    def update_permission_ids(
+        self,
+        role_id: int,
+        permission_ids: list[int],
+    ) -> list[int]:
+
+        role = self.repository.get(role_id)
+
+        if role is None:
+            raise ValueError("Role not found.")
+
+        db = self.repository.db
+
+        permission_ids = list(dict.fromkeys(permission_ids))
+
+        existing = (
+            db.query(RolePermission)
+            .filter(RolePermission.role_id == role_id)
+            .all()
+        )
+
+        for row in existing:
+            db.delete(row)
+
+        for permission_id in permission_ids:
+            db.add(
+                RolePermission(
+                    role_id=role_id,
+                    permission_id=permission_id,
+                )
+            )
+
+        db.commit()
+
+        return permission_ids
 
     # ---------------------------------------------------------
     # Delete
