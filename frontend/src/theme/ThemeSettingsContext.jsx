@@ -19,13 +19,18 @@ function loadSettings() {
     const stored = localStorage.getItem(STORAGE_KEY);
 
     if (stored) {
+      const parsed = JSON.parse(stored);
+
       return {
         ...defaultSettings,
-        ...JSON.parse(stored),
+        ...parsed,
       };
     }
   } catch (error) {
-    console.warn("Unable to load theme settings:", error);
+    console.warn(
+      "Unable to load theme settings:",
+      error
+    );
   }
 
   return defaultSettings;
@@ -62,11 +67,24 @@ export function ThemeSettingsProvider({ children }) {
       mode: settings.mode,
       density: settings.density,
 
-      setMode: (mode) =>
-        updateSettings({ mode }),
+      setMode: (mode) => {
+        if (mode !== "light" && mode !== "dark") {
+          return;
+        }
 
-      setDensity: (density) =>
-        updateSettings({ density }),
+        updateSettings({ mode });
+      },
+
+      setDensity: (density) => {
+        if (
+          density !== "comfortable" &&
+          density !== "compact"
+        ) {
+          return;
+        }
+
+        updateSettings({ density });
+      },
 
       resetSettings: () => {
         setSettings(defaultSettings);

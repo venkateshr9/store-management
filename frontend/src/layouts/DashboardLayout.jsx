@@ -10,27 +10,41 @@ import Topbar from "../components/Topbar";
 
 export default function DashboardLayout() {
   return (
-    <Box sx={{ display: "flex" }}>
-
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        backgroundColor: "background.default",
+        color: "text.primary",
+      }}
+    >
       <Topbar />
 
       <Sidebar />
 
-         <Box
-  	component="main"
-  	sx={{
-    	flexGrow: 1,
-    	p: 3,
-    	width: "100%",
-    	overflow: "auto",
- 	 }}
-	>
-	 <Toolbar />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: "100%",
+
+          minHeight: "100vh",
+
+          p: 3,
+
+          overflow: "auto",
+
+          backgroundColor: "background.default",
+          color: "text.primary",
+
+          transition:
+            "background-color 200ms ease, color 200ms ease",
+        }}
+      >
+        <Toolbar />
 
         <Outlet />
-
       </Box>
-
     </Box>
   );
 }

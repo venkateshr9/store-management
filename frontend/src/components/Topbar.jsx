@@ -26,6 +26,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../auth/AuthContext";
 import { logout as authLogout } from "../auth/authService";
 
+import {
+  useThemeSettings,
+} from "../theme/ThemeSettingsContext";
+
 const pageTitles = {
   "/dashboard": "Dashboard",
   "/users": "Users",
@@ -47,13 +51,12 @@ export default function Topbar() {
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [settingsAnchor, setSettingsAnchor] = useState(null);
 
-  const [themeMode, setThemeMode] = useState(() => {
-    return localStorage.getItem("storemgt-theme-mode") || "light";
-  });
-
-  const [tableDensity, setTableDensity] = useState(() => {
-    return localStorage.getItem("storemgt-table-density") || "comfortable";
-  });
+  const {
+    mode: themeMode,
+    density: tableDensity,
+    setMode: setThemeMode,
+    setDensity: setTableDensity,
+  } = useThemeSettings();
 
   const handleSettingsOpen = (event) => {
     setSettingsAnchor(event.currentTarget);
@@ -64,13 +67,11 @@ export default function Topbar() {
   };
 
   const handleThemeChange = (mode) => {
-    setThemeMode(mode);
-    localStorage.setItem("storemgt-theme-mode", mode);
+  	setThemeMode(mode);
   };
 
   const handleDensityChange = (density) => {
-    setTableDensity(density);
-    localStorage.setItem("storemgt-table-density", density);
+  	setTableDensity(density);
   };
 
   const pageTitle = useMemo(() => {

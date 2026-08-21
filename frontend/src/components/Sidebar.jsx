@@ -140,7 +140,12 @@ export default function Sidebar() {
           width: drawerWidth,
           boxSizing: "border-box",
 
-          backgroundColor: "#FFFFFF",
+          /*
+           * Theme-aware sidebar
+           */
+          backgroundColor: "background.paper",
+          color: "text.primary",
+
           borderRight: "1px solid",
           borderColor: "divider",
 
@@ -148,6 +153,12 @@ export default function Sidebar() {
           flexDirection: "column",
 
           overflowX: "hidden",
+
+          /*
+           * Smooth transition when changing theme
+           */
+          transition:
+            "background-color 200ms ease, color 200ms ease",
         },
       }}
     >
@@ -155,8 +166,11 @@ export default function Sidebar() {
       <Toolbar
         sx={{
           minHeight: "72px !important",
+
           borderBottom: "1px solid",
           borderColor: "divider",
+
+          backgroundColor: "background.paper",
         }}
       />
 
@@ -211,7 +225,9 @@ export default function Sidebar() {
                     px: 1.5,
                     pt: 1.25,
                     pb: 0.75,
-                    color: "text.disabled",
+
+                    color: "text.secondary",
+
                     fontSize: "0.68rem",
                     fontWeight: 700,
                     letterSpacing: "0.07em",
@@ -251,20 +267,29 @@ export default function Sidebar() {
                         transition:
                           "background-color 160ms ease, color 160ms ease, transform 160ms ease",
 
+                        /*
+                         * Theme-aware hover
+                         */
                         "&:hover": {
-                          backgroundColor: "rgba(30, 58, 95, 0.06)",
+                          backgroundColor: "action.hover",
                           color: "primary.main",
                         },
 
+                        /*
+                         * Theme-aware active item
+                         */
                         "&.Mui-selected": {
                           backgroundColor:
-                            "rgba(30, 58, 95, 0.10)",
+                            "action.selected",
+
                           color: "primary.main",
                         },
 
                         "&.Mui-selected:hover": {
                           backgroundColor:
-                            "rgba(30, 58, 95, 0.14)",
+                            "action.hover",
+
+                          color: "primary.main",
                         },
                       }}
                     >
@@ -315,16 +340,21 @@ export default function Sidebar() {
         sx={{
           px: 2,
           py: 1.5,
+
           borderTop: "1px solid",
           borderColor: "divider",
-          backgroundColor: "#FAFBFC",
+
+          /*
+           * Theme-aware footer
+           */
+          backgroundColor: "background.default",
         }}
       >
         <Typography
           variant="caption"
           sx={{
             display: "block",
-            color: "text.disabled",
+            color: "text.secondary",
             textAlign: "center",
             fontSize: "0.68rem",
           }}
